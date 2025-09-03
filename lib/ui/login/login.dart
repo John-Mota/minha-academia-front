@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:minha_academia_front/ui/home/home.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -103,7 +104,13 @@ class Login extends StatelessWidget {
                         ),
                         const SizedBox(height: 24.0),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => const Home(),
+                              ),
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size.fromHeight(50),
                             shape: RoundedRectangleBorder(
