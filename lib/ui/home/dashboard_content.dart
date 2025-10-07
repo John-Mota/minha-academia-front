@@ -1,0 +1,106 @@
+import 'package:flutter/material.dart';
+import 'package:minha_academia_front/ui/core/components/metrica_card/metrica_card.dart';
+
+class DashboardContent extends StatelessWidget {
+  const DashboardContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MediaQuery.removePadding(
+      context: context,
+      removeTop: true,
+      removeBottom: false,
+      child: ListView(
+        padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
+        children: [
+          Text(
+            'Dashboard Analítico',
+            style: Theme.of(
+              context,
+            ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8.0),
+          Text(
+            'Análise de crescimento e performance',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onSurface.withAlpha(178),
+            ),
+          ),
+          const SizedBox(height: 20.0),
+          SizedBox(
+            height: 300,
+            child: GridView.count(
+              crossAxisCount: 4,
+              crossAxisSpacing: 20.0,
+              mainAxisSpacing: 20.0,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              childAspectRatio: 1.5,
+              children: const [
+                MetricCard(
+                  title: 'Alunos Ativos',
+                  value: '1,247',
+                  icon: Icons.group,
+                  valueColor: Colors.greenAccent,
+                  iconColor: Colors.greenAccent,
+                ),
+                MetricCard(
+                  title: 'Novos Alunos (Mês)',
+                  value: '89',
+                  icon: Icons.trending_up,
+                  valueColor: Colors.blueAccent,
+                  iconColor: Colors.blueAccent,
+                ),
+                MetricCard(
+                  title: 'Máquinas em Manutenção',
+                  value: '3',
+                  icon: Icons.build,
+                  valueColor: Colors.amberAccent,
+                  iconColor: Colors.amberAccent,
+                ),
+                MetricCard(
+                  title: 'Receita Mensal',
+                  value: '4',
+                  icon: Icons.monetization_on,
+                  valueColor: Colors.greenAccent,
+                  iconColor: Colors.greenAccent,
+                  footer: '+8.3% vs. mês anterior',
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24.0),
+          Container(
+            height: 300,
+            padding: const EdgeInsets.all(20.0),
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Frequência Semanal de Check-ins',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  'Dados dos últimos 7 dias',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withAlpha(178),
+                  ),
+                ),
+                const Expanded(child: Center(child: Text('Área do Gráfico'))),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
