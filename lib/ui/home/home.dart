@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minha_academia_front/ui/home/dashboard_content.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -11,9 +12,20 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   bool _isCollapsed = false;
 
+  final List<Widget> _pages = [
+    const DashboardContent(),
+    const Center(child: Text('Página de Alunos')),
+    const Center(child: Text('Página de Professores')),
+    const Center(child: Text('Página de Frequência')),
+    const Center(child: Text('Página de Máquinas')),
+    const Center(child: Text('Página de Treinos')),
+    const Center(child: Text('Página de Relatórios')),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       body: Row(
         children: [
           Container(
@@ -104,10 +116,12 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
+
           Expanded(
             child: Container(
               color: Theme.of(context).colorScheme.surface,
-              child: const Center(child: Text('Área de Conteúdo da Dashboard')),
+
+              child: _pages[_selectedIndex],
             ),
           ),
         ],
@@ -126,7 +140,7 @@ class _HomeState extends State<Home> {
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Material(
         color: isSelected
-            ? Theme.of(context).colorScheme.primary.withOpacity(0.1)
+            ? Theme.of(context).colorScheme.primary.withAlpha(25)
             : Colors.transparent,
         borderRadius: BorderRadius.circular(8.0),
         child: InkWell(
@@ -147,7 +161,7 @@ class _HomeState extends State<Home> {
                             ? Theme.of(context).colorScheme.primary
                             : Theme.of(
                                 context,
-                              ).colorScheme.onSurface.withOpacity(0.7),
+                              ).colorScheme.onSurface.withAlpha(178),
                       ),
                     ),
                   )
@@ -161,7 +175,7 @@ class _HomeState extends State<Home> {
                               ? Theme.of(context).colorScheme.primary
                               : Theme.of(
                                   context,
-                                ).colorScheme.onSurface.withOpacity(0.7),
+                                ).colorScheme.onSurface.withAlpha(178),
                         ),
                         const SizedBox(width: 12.0),
                         Expanded(
@@ -172,7 +186,7 @@ class _HomeState extends State<Home> {
                                   ? Theme.of(context).colorScheme.primary
                                   : Theme.of(
                                       context,
-                                    ).colorScheme.onSurface.withOpacity(0.7),
+                                    ).colorScheme.onSurface.withAlpha(178),
                               fontWeight: isSelected
                                   ? FontWeight.bold
                                   : FontWeight.normal,

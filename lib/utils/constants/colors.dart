@@ -14,7 +14,7 @@ const Color lightForegroundColor = Color(
 ); // Cor de texto para tema claro
 
 // Cores para o tema escuro (dark)
-const Color darkBackgroundColor = Color(0xFF303A4F);
+const Color darkBackgroundColor = Color(0xFF0F172B);
 const Color darkForegroundColor = Color(
   0xFFF2F2F2,
 ); // Cor de texto para tema escuro
