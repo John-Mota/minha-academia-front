@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minha_academia_front/presentation/features/aluno/alunos_screen.dart';
 import 'package:minha_academia_front/presentation/features/dashboard/dashboard_content.dart';
 
 class Home extends StatefulWidget {
@@ -14,7 +15,7 @@ class _HomeState extends State<Home> {
 
   final List<Widget> _pages = [
     const DashboardContent(),
-    const Center(child: Text('Página de Alunos')),
+    const AlunosScreen(),
     const Center(child: Text('Página de Professores')),
     const Center(child: Text('Página de Frequência')),
     const Center(child: Text('Página de Máquinas')),
@@ -121,7 +122,11 @@ class _HomeState extends State<Home> {
             child: Container(
               color: Theme.of(context).colorScheme.surface,
 
-              child: _pages[_selectedIndex],
+              // CORREÇÃO: Usando Align para garantir que o conteúdo comece no topo
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: _pages[_selectedIndex],
+              ),
             ),
           ),
         ],
