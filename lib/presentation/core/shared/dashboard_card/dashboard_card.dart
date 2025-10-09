@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:minha_academia_front/ui/core/components/dashboard_card/dashboard_card_data.dart';
+import 'package:minha_academia_front/presentation/core/shared/dashboard_card/dashboard_card_data.dart';
 
 class DashboardCard extends StatelessWidget {
   final DashboardCardData data;

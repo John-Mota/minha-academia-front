@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:minha_academia_front/ui/home/dashboard_content.dart';
+import 'package:minha_academia_front/presentation/features/dashboard/dashboard_content.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

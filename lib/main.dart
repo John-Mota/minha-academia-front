@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:minha_academia_front/presentation/core/themes/themes.dart';
 import 'package:provider/provider.dart';
 import 'app.dart';
-import 'ui/core/themes/themes.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

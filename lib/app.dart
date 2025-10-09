@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'ui/core/themes/themes.dart';
-import 'ui/login/login.dart'; // Importa a sua tela de login
+import 'package:minha_academia_front/presentation/core/themes/themes.dart';
+import 'package:minha_academia_front/presentation/features/auth/login.dart';
 
 class App extends StatelessWidget {
   const App({super.key});

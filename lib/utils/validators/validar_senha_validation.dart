@@ -1,5 +1,5 @@
 import 'package:lucid_validation/lucid_validation.dart';
-import 'package:minha_academia_front/data/model/request/validar_recuperacao_request_dto.dart';
+import 'package:minha_academia_front/domain/model/request/validar_recuperacao_request_dto.dart';
 
 class ValidarSenhaValidation
     extends LucidValidator<ValidarRecuperacaoRequestDto> {

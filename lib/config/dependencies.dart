@@ -2,7 +2,7 @@
 
 import 'dart:io';
 
-import 'package:minha_academia_front/data/services/local_storage.dart';
+import 'package:minha_academia_front/data/local_storage.dart';
 import 'package:minha_academia_front/main.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:provider/provider.dart';

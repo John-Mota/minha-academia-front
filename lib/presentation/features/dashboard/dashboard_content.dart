@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:minha_academia_front/ui/core/components/metrica_card/metrica_card.dart';
-import 'package:minha_academia_front/ui/core/components/grafic_card/grafic_card.dart';
-import 'package:minha_academia_front/ui/wifgets/charts/weekly_checkin_chart.dart';
+import 'package:minha_academia_front/presentation/widgets/charts/weekly_checkin_chart.dart';
+
+import '../../core/shared/metrica_card/metrica_card.dart';
 
 class DashboardContent extends StatelessWidget {
   const DashboardContent({super.key});

@@ -1,5 +1,5 @@
 import 'package:lucid_validation/lucid_validation.dart';
-import 'package:minha_academia_front/data/model/request/login_request_dto.dart';
+import 'package:minha_academia_front/domain/model/request/login_request_dto.dart';
 
 class LoginValidator extends LucidValidator<LoginRequestDto> {
   LoginValidator() {

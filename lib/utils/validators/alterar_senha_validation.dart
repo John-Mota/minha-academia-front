@@ -1,5 +1,5 @@
 import 'package:lucid_validation/lucid_validation.dart';
-import 'package:minha_academia_front/data/model/request/alterar_senha_dto.dart';
+import 'package:minha_academia_front/domain/model/request/alterar_senha_dto.dart';
 
 class AlterarSenhaValidation extends LucidValidator<AlterarSenhaDto> {
   AlterarSenhaValidation() {

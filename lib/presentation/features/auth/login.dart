@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:minha_academia_front/ui/home/home.dart';
+import 'package:minha_academia_front/presentation/features/dashboard/home.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
