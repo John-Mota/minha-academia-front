@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minha_academia_front/presentation/features/aluno/alunos_screen.dart';
 import 'package:minha_academia_front/presentation/features/dashboard/dashboard_content.dart';
+import 'package:minha_academia_front/presentation/features/professor/professores_screen.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -16,7 +17,7 @@ class _HomeState extends State<Home> {
   final List<Widget> _pages = [
     const DashboardContent(),
     const AlunosScreen(),
-    const Center(child: Text('Página de Professores')),
+    const ProfessoresScreen(),
     const Center(child: Text('Página de Frequência')),
     const Center(child: Text('Página de Máquinas')),
     const Center(child: Text('Página de Treinos')),
@@ -32,13 +33,13 @@ class _HomeState extends State<Home> {
           Container(
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(4.0),
+              borderRadius: BorderRadius.circular(2.0),
               border: Border.all(
                 color: Theme.of(context).colorScheme.primary,
                 width: 0.8,
               ),
             ),
-            margin: const EdgeInsets.all(8.0),
+            margin: const EdgeInsets.all(16.0),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               width: _isCollapsed ? 50.0 : 250.0,

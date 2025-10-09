@@ -4,11 +4,13 @@ class TableColumn {
   final String title;
   final String dataKey;
   final bool isAction;
+  final int flex;
 
   const TableColumn({
     required this.title,
     required this.dataKey,
     this.isAction = false,
+    this.flex = 1,
   });
 }
 
@@ -34,16 +36,6 @@ class CustomDataTable extends StatelessWidget {
   static const Color _dividerColor = Color(0xFF28324A);
   static const double _rowHeight = 60.0;
   static const double _headerHeight = 48.0;
-
-  Map<String, int> get _columnFlexes => {
-    'nome': 3,
-    'matricula': 2,
-    'plano': 2,
-    'status': 2,
-    'telefone': 3,
-    'id': 1,
-    'Ações': 1,
-  };
 
   Widget _buildCell(dynamic item, ThemeData theme, TableColumn column) {
     if (column.isAction) {
@@ -91,10 +83,7 @@ class CustomDataTable extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
         children: columns.map((column) {
-          final String key = column.dataKey == 'id' && column.isAction
-              ? 'Ações'
-              : column.dataKey;
-          int flexValue = _columnFlexes[key] ?? 2;
+          int flexValue = column.flex;
 
           return Flexible(
             flex: flexValue,
@@ -116,37 +105,37 @@ class CustomDataTable extends StatelessWidget {
 
   Widget _buildDataBody(ThemeData theme) {
     return Expanded(
-      child: ListView.builder(
-        itemCount: data.length,
-        padding: EdgeInsets.zero,
-        itemBuilder: (context, index) {
-          final item = data[index];
-          return Container(
-            height: _rowHeight,
-            decoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(color: _dividerColor, width: 1.0),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 4.0),
+        child: ListView.builder(
+          itemCount: data.length,
+          padding: EdgeInsets.zero,
+          itemBuilder: (context, index) {
+            final item = data[index];
+            return Container(
+              height: _rowHeight,
+              decoration: const BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: _dividerColor, width: 1.0),
+                ),
               ),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              children: columns.map((column) {
-                final String key = column.dataKey == 'id' && column.isAction
-                    ? 'Ações'
-                    : column.dataKey;
-                int flexValue = _columnFlexes[key] ?? 2;
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                children: columns.map((column) {
+                  int flexValue = column.flex;
 
-                return Flexible(
-                  flex: flexValue,
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: _buildCell(item, theme, column),
-                  ),
-                );
-              }).toList(),
-            ),
-          );
-        },
+                  return Flexible(
+                    flex: flexValue,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: _buildCell(item, theme, column),
+                    ),
+                  );
+                }).toList(),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -159,7 +148,7 @@ class CustomDataTable extends StatelessWidget {
 
     if (value == 'Ativo') {
       color = Colors.green.shade600;
-    } else if (value == 'Inativo') {
+    } else if (value == 'Inativo' || value == 'Não Ativo') {
       color = Colors.red.shade600;
     } else if (value == 'Premium') {
       color = Colors.purple.shade600;
@@ -214,10 +203,8 @@ class CustomDataTable extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 16.0),
-
+          const SizedBox(height: 6.0),
           _buildHeaderRow(theme),
-
           _buildDataBody(theme),
         ],
       ),
