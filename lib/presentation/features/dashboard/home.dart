@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:minha_academia_front/presentation/features/aluno/alunos_screen.dart';
 import 'package:minha_academia_front/presentation/features/dashboard/dashboard_content.dart';
+import 'package:minha_academia_front/presentation/features/maquinas/MaquinasScreen.dart';
 import 'package:minha_academia_front/presentation/features/professor/professores_screen.dart';
+import 'package:minha_academia_front/presentation/features/treinos/TreinosScreen.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -18,9 +20,8 @@ class _HomeState extends State<Home> {
     const DashboardContent(),
     const AlunosScreen(),
     const ProfessoresScreen(),
-    const Center(child: Text('Página de Frequência')),
-    const Center(child: Text('Página de Máquinas')),
-    const Center(child: Text('Página de Treinos')),
+    const MaquinasScreen(),
+    const TreinosScreen(),
     const Center(child: Text('Página de Relatórios')),
   ];
 
@@ -95,24 +96,19 @@ class _HomeState extends State<Home> {
                     index: 2,
                   ),
                   _buildMenuItem(
-                    label: 'Frequência',
-                    icon: Icons.calendar_month,
-                    index: 3,
-                  ),
-                  _buildMenuItem(
                     label: 'Máquinas',
                     icon: Icons.fitness_center,
-                    index: 4,
+                    index: 3,
                   ),
                   _buildMenuItem(
                     label: 'Treinos',
                     icon: Icons.run_circle,
-                    index: 5,
+                    index: 4,
                   ),
                   _buildMenuItem(
                     label: 'Relatórios',
                     icon: Icons.assessment,
-                    index: 6,
+                    index: 5,
                   ),
                 ],
               ),
