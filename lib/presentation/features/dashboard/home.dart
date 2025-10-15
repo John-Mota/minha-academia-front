@@ -105,11 +105,6 @@ class _HomeState extends State<Home> {
                     icon: Icons.run_circle,
                     index: 4,
                   ),
-                  _buildMenuItem(
-                    label: 'Relatórios',
-                    icon: Icons.assessment,
-                    index: 5,
-                  ),
                 ],
               ),
             ),
@@ -119,7 +114,6 @@ class _HomeState extends State<Home> {
             child: Container(
               color: Theme.of(context).colorScheme.surface,
 
-              // CORREÇÃO: Usando Align para garantir que o conteúdo comece no topo
               child: Align(
                 alignment: Alignment.topLeft,
                 child: _pages[_selectedIndex],
