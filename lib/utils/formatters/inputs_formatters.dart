@@ -157,4 +157,37 @@ class InputFormatters {
   static String cepDesformatter(String text) {
     return text.replaceAll(RegExp(r'[^0-9]'), '');
   }
+
+  // Formatação de CREF (000000-G/SP)
+  static TextInputFormatter crefFormatter() {
+    return TextInputFormatter.withFunction((oldValue, newValue) {
+      // Remove caracteres que não são letras ou números e converte para maiúsculo
+      var text = newValue.text.toUpperCase().replaceAll(
+        RegExp(r'[^A-Z0-9]'),
+        '',
+      );
+
+      // Limita o tamanho do texto base (6 números + 1 letra + 2 letras)
+      if (text.length > 9) {
+        text = text.substring(0, 9);
+      }
+
+      var formatted = '';
+      if (text.length > 7) {
+        // 000000-G/SP
+        formatted =
+            '${text.substring(0, 6)}-${text.substring(6, 7)}/${text.substring(7)}';
+      } else if (text.length > 6) {
+        // 000000-G
+        formatted = '${text.substring(0, 6)}-${text.substring(6)}';
+      } else {
+        formatted = text;
+      }
+
+      return TextEditingValue(
+        text: formatted,
+        selection: TextSelection.collapsed(offset: formatted.length),
+      );
+    });
+  }
 }
