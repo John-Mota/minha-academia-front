@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minha_academia_front/presentation/features/aluno/cadastro_aluno_screen.dart';
 import 'package:minha_academia_front/presentation/widgets/table/custom_data_table.dart';
 
 class AlunosScreen extends StatelessWidget {
@@ -125,7 +126,7 @@ class AlunosScreen extends StatelessWidget {
               const SizedBox(width: 16.0),
               ElevatedButton.icon(
                 onPressed: () {
-                  print('Abrir formulário para Novo Aluno');
+                  _showCadastroDialog(context);
                 },
                 icon: const Icon(Icons.add, size: 20, color: Colors.white),
                 label: const Text(
@@ -163,6 +164,32 @@ class AlunosScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void _showCadastroDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        final screenHeight = MediaQuery.of(context).size.height;
+        final screenWidth = MediaQuery.of(context).size.width;
+
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4.0),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: screenWidth * 0.4,
+              maxHeight: screenHeight * 0.9,
+            ),
+            child: CadastroAlunoScreen(
+              onCancel: () => Navigator.of(context).pop(),
+            ),
+          ),
+        );
+      },
     );
   }
 }

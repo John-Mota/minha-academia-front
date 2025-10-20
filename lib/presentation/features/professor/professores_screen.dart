@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minha_academia_front/presentation/features/professor/cadastro_professor_screen.dart';
 import 'package:minha_academia_front/presentation/widgets/table/custom_data_table.dart';
 
 class ProfessoresScreen extends StatelessWidget {
@@ -166,7 +167,7 @@ class ProfessoresScreen extends StatelessWidget {
 
               ElevatedButton.icon(
                 onPressed: () {
-                  print('Abrir formulário para Novo Professor');
+                  _showCadastroDialog(context);
                 },
                 icon: const Icon(Icons.add, size: 20, color: Colors.white),
                 label: const Text(
@@ -204,6 +205,32 @@ class ProfessoresScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void _showCadastroDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        final screenHeight = MediaQuery.of(context).size.height;
+        final screenWidth = MediaQuery.of(context).size.width;
+
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4.0),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: screenWidth * 0.4,
+              maxHeight: screenHeight * 0.9,
+            ),
+            child: CadastroProfessorScreen(
+              onCancel: () => Navigator.of(context).pop(),
+            ),
+          ),
+        );
+      },
     );
   }
 }
