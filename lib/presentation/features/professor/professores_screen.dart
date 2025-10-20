@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minha_academia_front/presentation/features/professor/cadastro_professor_screen.dart';
 import 'package:minha_academia_front/presentation/widgets/table/custom_data_table.dart';
+import 'package:minha_academia_front/presentation/widgets/dialog/confirmation_dialog.dart';
 
 class ProfessoresScreen extends StatelessWidget {
   const ProfessoresScreen({super.key});
@@ -10,6 +11,8 @@ class ProfessoresScreen extends StatelessWidget {
       'id': 101,
       'nome': 'Dr. Roberto Lima',
       'cref': '012345-G/SP',
+      'email': 'roberto.lima@email.com',
+      'cpf': '111.111.111-11',
       'status': 'Ativo',
       'telefone': '(11) 98765-4321',
     },
@@ -17,6 +20,8 @@ class ProfessoresScreen extends StatelessWidget {
       'id': 102,
       'nome': 'Mariana Costa',
       'cref': '054321-G/MG',
+      'email': 'mariana.costa@email.com',
+      'cpf': '222.222.222-22',
       'status': 'Ativo',
       'telefone': '(11) 98765-1234',
     },
@@ -24,6 +29,8 @@ class ProfessoresScreen extends StatelessWidget {
       'id': 103,
       'nome': 'Fernando Silva',
       'cref': '098765-G/RJ',
+      'email': 'fernando.silva@email.com',
+      'cpf': '333.333.333-33',
       'status': 'Não Ativo',
       'telefone': '(11) 98765-5678',
     },
@@ -31,6 +38,8 @@ class ProfessoresScreen extends StatelessWidget {
       'id': 104,
       'nome': 'Juliana Santos',
       'cref': '135790-G/PR',
+      'email': 'juliana.santos@email.com',
+      'cpf': '444.444.444-44',
       'status': 'Ativo',
       'telefone': '(11) 98765-9012',
     },
@@ -38,6 +47,8 @@ class ProfessoresScreen extends StatelessWidget {
       'id': 105,
       'nome': 'André Oliveira',
       'cref': '246802-G/SP',
+      'email': 'andre.oliveira@email.com',
+      'cpf': '555.555.555-55',
       'status': 'Não Ativo',
       'telefone': '(11) 98765-3456',
     },
@@ -45,6 +56,8 @@ class ProfessoresScreen extends StatelessWidget {
       'id': 106,
       'nome': 'Carla Pimenta',
       'cref': '333444-G/SP',
+      'email': 'carla.pimenta@email.com',
+      'cpf': '666.666.666-66',
       'status': 'Ativo',
       'telefone': '(11) 98765-1111',
     },
@@ -52,6 +65,8 @@ class ProfessoresScreen extends StatelessWidget {
       'id': 107,
       'nome': 'Pedro Rocha',
       'cref': '555666-G/MG',
+      'email': 'pedro.rocha@email.com',
+      'cpf': '777.777.777-77',
       'status': 'Ativo',
       'telefone': '(11) 98765-2222',
     },
@@ -59,6 +74,8 @@ class ProfessoresScreen extends StatelessWidget {
       'id': 108,
       'nome': 'Beatriz Motta',
       'cref': '777888-G/RJ',
+      'email': 'beatriz.motta@email.com',
+      'cpf': '888.888.888-88',
       'status': 'Ativo',
       'telefone': '(11) 98765-3333',
     },
@@ -66,6 +83,8 @@ class ProfessoresScreen extends StatelessWidget {
       'id': 109,
       'nome': 'Rafael Souza',
       'cref': '999000-G/PR',
+      'email': 'rafael.souza@email.com',
+      'cpf': '999.999.999-99',
       'status': 'Não Ativo',
       'telefone': '(11) 98765-4444',
     },
@@ -73,6 +92,8 @@ class ProfessoresScreen extends StatelessWidget {
       'id': 110,
       'nome': 'Tatiana Alves',
       'cref': '121212-G/SP',
+      'email': 'tatiana.alves@email.com',
+      'cpf': '101.010.101-01',
       'status': 'Ativo',
       'telefone': '(11) 98765-5555',
     },
@@ -80,12 +101,17 @@ class ProfessoresScreen extends StatelessWidget {
       'id': 111,
       'nome': 'Márcio Gomes',
       'cref': '343434-G/SP',
+      'email': 'marcio.gomes@email.com',
+      'cpf': '123.456.789-00',
       'status': 'Ativo',
       'telefone': '(11) 98765-6666',
     },
     {
       'id': 112,
+      'nome': 'Nome não informado',
       'cref': '565656-G/MG',
+      'email': 'naoinformado@email.com',
+      'cpf': '000.000.000-00',
       'status': 'Não Ativo',
       'telefone': '(11) 98765-7777',
     },
@@ -196,10 +222,22 @@ class ProfessoresScreen extends StatelessWidget {
               data: _professorData,
               hasActions: true,
               onEdit: (professor) {
-                print('Chamado para Editar Professor ID: ${professor['id']}');
+                _showCadastroDialog(context, professor: professor);
               },
               onDelete: (professor) {
-                print('Chamado para Excluir Professor ID: ${professor['id']}');
+                showDialog(
+                  context: context,
+                  builder: (context) => ConfirmationDialog(
+                    title: 'Confirmar Exclusão',
+                    content:
+                        'Tem certeza de que deseja excluir o professor ${professor['nome']}? Esta ação não pode ser desfeita.',
+                    onConfirm: () {
+                      print(
+                        'Chamado para Excluir Professor ID: ${professor['id']}',
+                      );
+                    },
+                  ),
+                );
               },
             ),
           ),
@@ -208,7 +246,10 @@ class ProfessoresScreen extends StatelessWidget {
     );
   }
 
-  void _showCadastroDialog(BuildContext context) {
+  void _showCadastroDialog(
+    BuildContext context, {
+    Map<String, dynamic>? professor,
+  }) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -226,6 +267,7 @@ class ProfessoresScreen extends StatelessWidget {
               maxHeight: screenHeight * 0.9,
             ),
             child: CadastroProfessorScreen(
+              professor: professor,
               onCancel: () => Navigator.of(context).pop(),
             ),
           ),

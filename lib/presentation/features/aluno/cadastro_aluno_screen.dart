@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:minha_academia_front/presentation/widgets/dialog/confirmation_dialog.dart';
 import 'package:minha_academia_front/utils/constants/colors.dart';
 import 'package:minha_academia_front/utils/formatters/inputs_formatters.dart';
 
 class CadastroAlunoScreen extends StatefulWidget {
   final VoidCallback? onCancel;
+  final Map<String, dynamic>? aluno;
 
-  const CadastroAlunoScreen({super.key, this.onCancel});
+  const CadastroAlunoScreen({super.key, this.onCancel, this.aluno});
 
   @override
   State<CadastroAlunoScreen> createState() => _CadastroAlunoScreenState();
@@ -14,6 +16,7 @@ class CadastroAlunoScreen extends StatefulWidget {
 
 class _CadastroAlunoScreenState extends State<CadastroAlunoScreen> {
   final _formKey = GlobalKey<FormState>();
+  late bool _isEditing;
 
   bool _isEmailDuplicate = false;
   bool _isCpfDuplicate = false;
@@ -31,6 +34,17 @@ class _CadastroAlunoScreenState extends State<CadastroAlunoScreen> {
   @override
   void initState() {
     super.initState();
+    _isEditing = widget.aluno != null;
+
+    if (_isEditing) {
+      _nomeController.text = widget.aluno!['nome'] ?? '';
+      _emailController.text = widget.aluno!['email'] ?? '';
+      _cpfController.text = widget.aluno!['cpf'] ?? '';
+      _telefoneController.text = widget.aluno!['telefone'] ?? '';
+      _dataNascimentoController.text = widget.aluno!['dataNascimento'] ?? '';
+      _planoSelecionado = widget.aluno!['plano'];
+    }
+
     _emailController.addListener(() {
       setState(() {
         _isEmailDuplicate = _emailController.text == 'existente@email.com';
@@ -70,7 +84,7 @@ class _CadastroAlunoScreenState extends State<CadastroAlunoScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Cadastro de Novo Aluno',
+                    _isEditing ? 'Editar Aluno' : 'Cadastro de Novo Aluno',
                     style: theme.textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -143,8 +157,11 @@ class _CadastroAlunoScreenState extends State<CadastroAlunoScreen> {
                           items:
                               [
                                     'Gratuito',
+                                    'Básico',
+                                    'Intermediário',
                                     'Silver',
                                     'Gold',
+                                    'Premium',
                                     'Platinu',
                                     'Wellhub',
                                   ]
@@ -163,7 +180,7 @@ class _CadastroAlunoScreenState extends State<CadastroAlunoScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 40.0),
+              const SizedBox(height: 20.0),
               Row(
                 children: [
                   if (widget.onCancel != null) ...[
@@ -186,7 +203,41 @@ class _CadastroAlunoScreenState extends State<CadastroAlunoScreen> {
                   ],
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        final mainDialogContext = context;
+                        if (_isEditing) {
+                          showDialog(
+                            context: context,
+                            builder: (dialogContext) => ConfirmationDialog(
+                              title: 'Confirmar Alterações',
+                              content:
+                                  'Deseja salvar as alterações feitas no cadastro de ${widget.aluno!['nome']}?',
+                              confirmText: 'Salvar',
+                              onConfirm: () {
+                                print(
+                                  'Salvando alterações para o aluno ID: ${widget.aluno!['id']}',
+                                );
+                                Navigator.of(mainDialogContext).pop();
+                              },
+                            ),
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (dialogContext) => ConfirmationDialog(
+                              title: 'Confirmar Cadastro',
+                              content: 'Deseja cadastrar o novo aluno?',
+                              confirmText: 'Cadastrar',
+                              onConfirm: () {
+                                print(
+                                  'Cadastrando e enviando ativação para o novo aluno.',
+                                );
+                                Navigator.of(mainDialogContext).pop();
+                              },
+                            ),
+                          );
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: _primaryHighlightColor,
                         minimumSize: const Size(double.infinity, 56),
@@ -195,7 +246,11 @@ class _CadastroAlunoScreenState extends State<CadastroAlunoScreen> {
                         ),
                         elevation: 0,
                       ),
-                      child: const Text('Cadastrar e Enviar Ativação'),
+                      child: Text(
+                        _isEditing
+                            ? 'Salvar Alterações'
+                            : 'Cadastrar e Enviar Ativação',
+                      ),
                     ),
                   ),
                 ],

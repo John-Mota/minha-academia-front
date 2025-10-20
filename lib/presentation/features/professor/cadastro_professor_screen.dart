@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minha_academia_front/utils/constants/colors.dart';
 import 'package:minha_academia_front/utils/formatters/inputs_formatters.dart';
+import 'package:minha_academia_front/presentation/widgets/dialog/confirmation_dialog.dart';
 
 class CadastroProfessorScreen extends StatefulWidget {
   final VoidCallback? onCancel;
+  final Map<String, dynamic>? professor;
 
-  const CadastroProfessorScreen({super.key, this.onCancel});
+  const CadastroProfessorScreen({super.key, this.onCancel, this.professor});
 
   @override
   State<CadastroProfessorScreen> createState() =>
@@ -15,6 +17,7 @@ class CadastroProfessorScreen extends StatefulWidget {
 
 class _CadastroProfessorScreenState extends State<CadastroProfessorScreen> {
   final _formKey = GlobalKey<FormState>();
+  late bool _isEditing;
 
   bool _isEmailDuplicate = false;
   bool _isCpfDuplicate = false;
@@ -31,6 +34,17 @@ class _CadastroProfessorScreenState extends State<CadastroProfessorScreen> {
   @override
   void initState() {
     super.initState();
+    _isEditing = widget.professor != null;
+
+    if (_isEditing) {
+      _nomeController.text = widget.professor!['nome'] ?? '';
+      _emailController.text = widget.professor!['email'] ?? '';
+      _cpfController.text = widget.professor!['cpf'] ?? '';
+      _crefController.text = widget.professor!['cref'] ?? '';
+      _dataNascimentoController.text =
+          widget.professor!['dataNascimento'] ?? '';
+    }
+
     _emailController.addListener(() {
       setState(() {
         _isEmailDuplicate = _emailController.text == 'existente@email.com';
@@ -70,7 +84,9 @@ class _CadastroProfessorScreenState extends State<CadastroProfessorScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Cadastro de Novo Professor',
+                    _isEditing
+                        ? 'Editar Professor'
+                        : 'Cadastro de Novo Professor',
                     style: theme.textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -130,7 +146,7 @@ class _CadastroProfessorScreenState extends State<CadastroProfessorScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 60.0),
+              const SizedBox(height: 40.0),
               Row(
                 children: [
                   if (widget.onCancel != null) ...[
@@ -153,7 +169,41 @@ class _CadastroProfessorScreenState extends State<CadastroProfessorScreen> {
                   ],
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        final mainDialogContext = context;
+                        if (_isEditing) {
+                          showDialog(
+                            context: context,
+                            builder: (dialogContext) => ConfirmationDialog(
+                              title: 'Confirmar Alterações',
+                              content:
+                                  'Deseja salvar as alterações feitas no cadastro de ${widget.professor!['nome']}?',
+                              confirmText: 'Salvar',
+                              onConfirm: () {
+                                print(
+                                  'Salvando alterações para o professor ID: ${widget.professor!['id']}',
+                                );
+                                Navigator.of(mainDialogContext).pop();
+                              },
+                            ),
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (dialogContext) => ConfirmationDialog(
+                              title: 'Confirmar Cadastro',
+                              content: 'Deseja cadastrar o novo professor?',
+                              confirmText: 'Cadastrar',
+                              onConfirm: () {
+                                print(
+                                  'Cadastrando e enviando ativação para o novo professor.',
+                                );
+                                Navigator.of(mainDialogContext).pop();
+                              },
+                            ),
+                          );
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: _primaryHighlightColor,
                         minimumSize: const Size(double.infinity, 56),
@@ -162,7 +212,11 @@ class _CadastroProfessorScreenState extends State<CadastroProfessorScreen> {
                         ),
                         elevation: 0,
                       ),
-                      child: const Text('Cadastrar e Enviar Ativação'),
+                      child: Text(
+                        _isEditing
+                            ? 'Salvar Alterações'
+                            : 'Cadastrar e Enviar Ativação',
+                      ),
                     ),
                   ),
                 ],

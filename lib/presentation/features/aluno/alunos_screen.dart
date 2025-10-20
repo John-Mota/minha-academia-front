@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minha_academia_front/presentation/features/aluno/cadastro_aluno_screen.dart';
 import 'package:minha_academia_front/presentation/widgets/table/custom_data_table.dart';
+import 'package:minha_academia_front/presentation/widgets/dialog/confirmation_dialog.dart';
 
 class AlunosScreen extends StatelessWidget {
   const AlunosScreen({super.key});
@@ -12,6 +13,9 @@ class AlunosScreen extends StatelessWidget {
       'matricula': 'FP001',
       'plano': 'Premium',
       'status': 'Ativo',
+      'email': 'ana.silva@email.com',
+      'cpf': '111.111.111-11',
+      'dataNascimento': '10/05/1990',
       'telefone': '(11) 99999-1234',
     },
     {
@@ -20,6 +24,9 @@ class AlunosScreen extends StatelessWidget {
       'matricula': 'FP002',
       'plano': 'Básico',
       'status': 'Ativo',
+      'email': 'carlos.santos@email.com',
+      'cpf': '222.222.222-22',
+      'dataNascimento': '15/08/1985',
       'telefone': '(11) 99999-5678',
     },
     {
@@ -28,6 +35,9 @@ class AlunosScreen extends StatelessWidget {
       'matricula': 'FP003',
       'plano': 'Premium',
       'status': 'Inativo',
+      'email': 'maria.oliveira@email.com',
+      'cpf': '333.333.333-33',
+      'dataNascimento': '20/11/2000',
       'telefone': '(11) 99999-9012',
     },
     {
@@ -36,6 +46,9 @@ class AlunosScreen extends StatelessWidget {
       'matricula': 'FP004',
       'plano': 'Intermediário',
       'status': 'Ativo',
+      'email': 'joao.costa@email.com',
+      'cpf': '444.444.444-44',
+      'dataNascimento': '01/02/1998',
       'telefone': '(11) 99999-3456',
     },
     {
@@ -44,6 +57,9 @@ class AlunosScreen extends StatelessWidget {
       'matricula': 'FP005',
       'plano': 'Básico',
       'status': 'Ativo',
+      'email': 'luciana.pereira@email.com',
+      'cpf': '555.555.555-55',
+      'dataNascimento': '30/07/1995',
       'telefone': '(11) 99999-7890',
     },
   ];
@@ -155,10 +171,20 @@ class AlunosScreen extends StatelessWidget {
               data: _alunoData,
               hasActions: true,
               onEdit: (aluno) {
-                print('Chamado para Editar Aluno ID: ${aluno['id']}');
+                _showCadastroDialog(context, aluno: aluno);
               },
               onDelete: (aluno) {
-                print('Chamado para Excluir Aluno ID: ${aluno['id']}');
+                showDialog(
+                  context: context,
+                  builder: (context) => ConfirmationDialog(
+                    title: 'Confirmar Exclusão',
+                    content:
+                        'Tem certeza de que deseja excluir o aluno ${aluno['nome']}? Esta ação não pode ser desfeita.',
+                    onConfirm: () {
+                      print('Chamado para Excluir Aluno ID: ${aluno['id']}');
+                    },
+                  ),
+                );
               },
             ),
           ),
@@ -167,7 +193,10 @@ class AlunosScreen extends StatelessWidget {
     );
   }
 
-  void _showCadastroDialog(BuildContext context) {
+  void _showCadastroDialog(
+    BuildContext context, {
+    Map<String, dynamic>? aluno,
+  }) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -185,6 +214,7 @@ class AlunosScreen extends StatelessWidget {
               maxHeight: screenHeight * 0.9,
             ),
             child: CadastroAlunoScreen(
+              aluno: aluno,
               onCancel: () => Navigator.of(context).pop(),
             ),
           ),
