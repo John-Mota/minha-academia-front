@@ -1,44 +1,34 @@
 name: Flutter Web Deploy
 
 on:
-  # O workflow será executado sempre que houver um push para o branch 'main'
   push:
     branches:
-      - main 
+      - main
 
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-      # 1. Checkout do código
       - uses: actions/checkout@v4
-      
-      # 2. Configura o Flutter
+
       - uses: subosito/flutter-action@v2
         with:
-          # VERIFIQUE E AJUSTE: Use a versão do Flutter que você usa localmente
-          flutter-version: '3.19.0' 
-          channel: 'stable'
+          flutter-version: "3.22.2"
+          channel: "stable"
 
-      # 3. Baixa as dependências
       - name: Get Flutter dependencies
         run: flutter pub get
 
-      # 4. Compila para Web (Gera a pasta 'build/web')
       - name: Build Flutter Web
-        run: flutter build web --release 
-        
-      # 5. Deploy (Transferência) para a OCI via SCP
+        run: flutter build web --release
+
       - name: Deploy to OCI server
         uses: appleboy/scp-action@v0.1.7
         with:
-          # Use os SEGREDO que você configurou no GitHub
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          # O diretório de origem é a pasta gerada pela compilação
-          source: "build/web/*" 
-          # O diretório de destino na sua VM (Onde o Nginx está apontando)
+          source: "build/web/*"
           target: "/var/www/meuprojeto"
-          strip_components: 2 # Remove 'build/web/' do caminho de transferência
+          strip_components: 2
