@@ -14,7 +14,8 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.22.2"
+          # Versão correta que suporta Dart 3.9.2
+          flutter-version: "3.35.5"
           channel: "stable"
 
       - name: Get Flutter dependencies
