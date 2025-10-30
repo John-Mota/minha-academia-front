@@ -1,0 +1,122 @@
+{
+  "professores": [
+    {
+      "id": 101,
+      "nome": "Dr. Roberto Lima",
+      "cref": "012345-G/SP",
+      "email": "roberto.lima@email.com",
+      "cpf": "111.111.111-11",
+      "status": "Ativo",
+      "telefone": "(11) 98765-4321",
+      "ativo": true
+    },
+    {
+      "id": 102,
+      "nome": "Mariana Costa",
+      "cref": "054321-G/MG",
+      "email": "mariana.costa@email.com",
+      "cpf": "222.222.222-22",
+      "status": "Ativo",
+      "telefone": "(11) 98765-1234",
+      "ativo": true
+    },
+    {
+      "id": 103,
+      "nome": "Fernando Silva",
+      "cref": "098765-G/RJ",
+      "email": "fernando.silva@email.com",
+      "cpf": "333.333.333-33",
+      "status": "Férias",
+      "telefone": "(11) 98765-5678",
+      "ativo": true
+    },
+    {
+      "id": 104,
+      "nome": "Juliana Santos",
+      "cref": "135790-G/PR",
+      "email": "juliana.santos@email.com",
+      "cpf": "444.444.444-44",
+      "status": "Ativo",
+      "telefone": "(11) 98765-9012",
+      "ativo": true
+    },
+    {
+      "id": 105,
+      "nome": "André Oliveira",
+      "cref": "246802-G/SP",
+      "email": "andre.oliveira@email.com",
+      "cpf": "555.555.555-55",
+      "status": "Licença",
+      "telefone": "(11) 98765-3456",
+      "ativo": true
+    },
+    {
+      "id": 106,
+      "nome": "Carla Pimenta",
+      "cref": "333444-G/SP",
+      "email": "carla.pimenta@email.com",
+      "cpf": "666.666.666-66",
+      "status": "Ativo",
+      "telefone": "(11) 98765-1111",
+      "ativo": true
+    },
+    {
+      "id": 107,
+      "nome": "Pedro Rocha",
+      "cref": "555666-G/MG",
+      "email": "pedro.rocha@email.com",
+      "cpf": "777.777.777-77",
+      "status": "Ativo",
+      "telefone": "(11) 98765-2222",
+      "ativo": true
+    },
+    {
+      "id": 108,
+      "nome": "Beatriz Motta",
+      "cref": "777888-G/RJ",
+      "email": "beatriz.motta@email.com",
+      "cpf": "888.888.888-88",
+      "status": "Ativo",
+      "telefone": "(11) 98765-3333",
+      "ativo": true
+    },
+    {
+      "id": 109,
+      "nome": "Rafael Souza",
+      "cref": "999000-G/PR",
+      "email": "rafael.souza@email.com",
+      "cpf": "999.999.999-99",
+      "status": "Ativo",
+      "telefone": "(11) 98765-4444",
+      "ativo": true
+    },
+    {
+      "id": 110,
+      "nome": "Tatiana Alves",
+      "cref": "121212-G/SP",
+      "email": "tatiana.alves@email.com",
+      "cpf": "101.010.101-01",
+      "status": "Não Ativo",
+      "telefone": "(11) 98765-5555",
+      "ativo": false
+    }
+  ],
+  "alunos": [],
+  "usuarios": [
+    {
+      "id": 1,
+      "email": "admin@academia.com",
+      "senhaHash": "senha123",
+      "perfil": "ADMINISTRADOR",
+      "nome": "Administrador Principal"
+    },
+    {
+      "id": 2,
+      "email": "operador@academia.com",
+      "senhaHash": "senha456",
+      "perfil": "OPERADOR",
+      "nome": "Operador do Sistema"
+    }
+  ],
+  "dashboard_data": {}
+}
