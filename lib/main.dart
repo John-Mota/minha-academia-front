@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:minha_academia_front/presentation/core/themes/themes.dart';
 import 'package:provider/provider.dart';
+import 'package:minha_academia_front/presentation/core/themes/themes.dart';
+import 'package:minha_academia_front/data/repositories/auth_repository.dart';
 import 'app.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => AuthRepository()),
+      ],
       child: const App(),
     ),
   );
 }
 
 class ThemeProvider extends ChangeNotifier {
-  ThemeData _themeData = lightTheme;
+  ThemeData _themeData = darkTheme;
 
   ThemeData get themeData => _themeData;
 
