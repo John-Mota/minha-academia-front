@@ -83,12 +83,15 @@ class _CadastroProfessorScreenState extends State<CadastroProfessorScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    _isEditing
-                        ? 'Editar Professor'
-                        : 'Cadastro de Novo Professor',
-                    style: theme.textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Text(
+                      _isEditing
+                          ? 'Editar Professor'
+                          : 'Cadastro de Novo Professor',
+                      style: theme.textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   if (widget.onCancel != null)
@@ -122,29 +125,45 @@ class _CadastroProfessorScreenState extends State<CadastroProfessorScreen> {
                 isDuplicate: _isCpfDuplicate,
               ),
               const SizedBox(height: 20.0),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: _buildTextField(
-                      controller: _dataNascimentoController,
-                      label: 'Data de Nascimento',
-                      hint: 'DD/MM/AAAA',
-                      keyboardType: TextInputType.datetime,
-                      formatters: [InputFormatters.dateFormatter()],
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: _buildTextField(
-                      controller: _crefController,
-                      label: 'CREF',
-                      hint: '000000-G/SP',
-                      keyboardType: TextInputType.text,
-                      formatters: [InputFormatters.crefFormatter()],
-                    ),
-                  ),
-                ],
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final bool shouldStack = constraints.maxWidth < 450;
+
+                  final Widget dataNascimentoField = _buildTextField(
+                    controller: _dataNascimentoController,
+                    label: 'Data de Nascimento',
+                    hint: 'DD/MM/AAAA',
+                    keyboardType: TextInputType.datetime,
+                    formatters: [InputFormatters.dateFormatter()],
+                  );
+
+                  final Widget crefField = _buildTextField(
+                    controller: _crefController,
+                    label: 'CREF',
+                    hint: '000000-G/SP',
+                    keyboardType: TextInputType.text,
+                    formatters: [InputFormatters.crefFormatter()],
+                  );
+
+                  if (shouldStack) {
+                    return Column(
+                      children: [
+                        dataNascimentoField,
+                        const SizedBox(height: 20),
+                        crefField,
+                      ],
+                    );
+                  } else {
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(child: dataNascimentoField),
+                        const SizedBox(width: 20),
+                        Expanded(child: crefField),
+                      ],
+                    );
+                  }
+                },
               ),
               const SizedBox(height: 40.0),
               Row(
@@ -213,9 +232,7 @@ class _CadastroProfessorScreenState extends State<CadastroProfessorScreen> {
                         elevation: 0,
                       ),
                       child: Text(
-                        _isEditing
-                            ? 'Salvar Alterações'
-                            : 'Cadastrar e Enviar Ativação',
+                        _isEditing ? 'Salvar Alterações' : 'Cadastrar',
                       ),
                     ),
                   ),

@@ -83,10 +83,13 @@ class _CadastroAlunoScreenState extends State<CadastroAlunoScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    _isEditing ? 'Editar Aluno' : 'Cadastro de Novo Aluno',
-                    style: theme.textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Text(
+                      _isEditing ? 'Editar Aluno' : 'Cadastro de Novo Aluno',
+                      style: theme.textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   if (widget.onCancel != null)
@@ -128,57 +131,73 @@ class _CadastroAlunoScreenState extends State<CadastroAlunoScreen> {
                 formatters: [InputFormatters.phoneFormatter()],
               ),
               const SizedBox(height: 20.0),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: _buildTextField(
-                      controller: _dataNascimentoController,
-                      label: 'Data de Nascimento',
-                      hint: 'DD/MM/AAAA',
-                      keyboardType: TextInputType.datetime,
-                      formatters: [InputFormatters.dateFormatter()],
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: Column(
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final bool shouldStack = constraints.maxWidth < 450;
+
+                  final Widget dataNascimentoField = _buildTextField(
+                    controller: _dataNascimentoController,
+                    label: 'Data de Nascimento',
+                    hint: 'DD/MM/AAAA',
+                    keyboardType: TextInputType.datetime,
+                    formatters: [InputFormatters.dateFormatter()],
+                  );
+
+                  final Widget planoField = Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Plano', style: theme.textTheme.titleMedium),
+                      const SizedBox(height: 8.0),
+                      DropdownButtonFormField<String>(
+                        value: _planoSelecionado,
+                        hint: const Text('Selecione um plano'),
+                        dropdownColor: _fieldFillColor,
+                        decoration: _inputDecoration(
+                          hint: 'Selecione um plano',
+                        ),
+                        items:
+                            [
+                                  'Gratuito',
+                                  'Básico',
+                                  'Intermediário',
+                                  'Silver',
+                                  'Gold',
+                                  'Premium',
+                                  'Platinu',
+                                  'Wellhub',
+                                ]
+                                .map(
+                                  (plano) => DropdownMenuItem(
+                                    value: plano,
+                                    child: Text(plano),
+                                  ),
+                                )
+                                .toList(),
+                        onChanged: (value) =>
+                            setState(() => _planoSelecionado = value),
+                      ),
+                    ],
+                  );
+
+                  if (shouldStack) {
+                    return Column(
+                      children: [
+                        dataNascimentoField,
+                        const SizedBox(height: 20),
+                        planoField,
+                      ],
+                    );
+                  } else {
+                    return Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Plano', style: theme.textTheme.titleMedium),
-                        const SizedBox(height: 8.0),
-                        DropdownButtonFormField<String>(
-                          value: _planoSelecionado,
-                          hint: const Text('Selecione um plano'),
-                          dropdownColor: _fieldFillColor,
-                          decoration: _inputDecoration(
-                            hint: 'Selecione um plano',
-                          ),
-                          items:
-                              [
-                                    'Gratuito',
-                                    'Básico',
-                                    'Intermediário',
-                                    'Silver',
-                                    'Gold',
-                                    'Premium',
-                                    'Platinu',
-                                    'Wellhub',
-                                  ]
-                                  .map(
-                                    (plano) => DropdownMenuItem(
-                                      value: plano,
-                                      child: Text(plano),
-                                    ),
-                                  )
-                                  .toList(),
-                          onChanged: (value) =>
-                              setState(() => _planoSelecionado = value),
-                        ),
+                        Expanded(child: dataNascimentoField),
+                        const SizedBox(width: 20),
+                        Expanded(child: planoField),
                       ],
-                    ),
-                  ),
-                ],
+                    );
+                  }
+                },
               ),
               const SizedBox(height: 20.0),
               Row(
@@ -247,9 +266,7 @@ class _CadastroAlunoScreenState extends State<CadastroAlunoScreen> {
                         elevation: 0,
                       ),
                       child: Text(
-                        _isEditing
-                            ? 'Salvar Alterações'
-                            : 'Cadastrar e Enviar Ativação',
+                        _isEditing ? 'Salvar Alterações' : 'Cadastrar',
                       ),
                     ),
                   ),

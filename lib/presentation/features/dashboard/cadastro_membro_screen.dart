@@ -70,10 +70,13 @@ class _CadastroMembroScreenState extends State<CadastroMembroScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Cadastro de Novo Membro',
-                    style: theme.textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Text(
+                      'Cadastro de Novo Membro',
+                      style: theme.textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   if (widget.onCancel != null)
@@ -90,7 +93,6 @@ class _CadastroMembroScreenState extends State<CadastroMembroScreen> {
                 hint: 'Digite o nome completo',
               ),
               const SizedBox(height: 20.0),
-
               _buildTextField(
                 controller: _emailController,
                 label: 'E-mail',
@@ -108,51 +110,66 @@ class _CadastroMembroScreenState extends State<CadastroMembroScreen> {
                 isDuplicate: _isCpfDuplicate,
               ),
               const SizedBox(height: 20.0),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: _buildTextField(
-                      controller: _dataNascimentoController,
-                      label: 'Data de Nascimento',
-                      hint: 'DD/MM/AAAA',
-                      keyboardType: TextInputType.datetime,
-                      formatters: [InputFormatters.dateFormatter()],
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: Column(
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final bool shouldStack = constraints.maxWidth < 450;
+
+                  final Widget dataNascimentoField = _buildTextField(
+                    controller: _dataNascimentoController,
+                    label: 'Data de Nascimento',
+                    hint: 'DD/MM/AAAA',
+                    keyboardType: TextInputType.datetime,
+                    formatters: [InputFormatters.dateFormatter()],
+                  );
+
+                  final Widget tipoPerfilField = Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Tipo de Perfil',
+                        style: theme.textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 8.0),
+                      DropdownButtonFormField<String>(
+                        value: _tipoPerfilSelecionado,
+                        hint: const Text('Selecione um perfil'),
+                        dropdownColor: _fieldFillColor,
+                        decoration: _inputDecoration(
+                          hint: 'Selecione um perfil',
+                        ),
+                        items: ['Operador', 'Administrador'].map((perfil) {
+                          return DropdownMenuItem(
+                            value: perfil,
+                            child: Text(perfil),
+                          );
+                        }).toList(),
+                        onChanged: (value) =>
+                            setState(() => _tipoPerfilSelecionado = value),
+                      ),
+                    ],
+                  );
+
+                  if (shouldStack) {
+                    return Column(
+                      children: [
+                        dataNascimentoField,
+                        const SizedBox(height: 20),
+                        tipoPerfilField,
+                      ],
+                    );
+                  } else {
+                    return Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Tipo de Perfil',
-                          style: theme.textTheme.titleMedium,
-                        ),
-                        const SizedBox(height: 8.0),
-                        DropdownButtonFormField<String>(
-                          value: _tipoPerfilSelecionado,
-                          hint: const Text('Selecione um perfil'),
-                          dropdownColor: _fieldFillColor,
-                          decoration: _inputDecoration(
-                            hint: 'Selecione um perfil',
-                          ),
-                          items: ['Operador', 'Administrador'].map((perfil) {
-                            return DropdownMenuItem(
-                              value: perfil,
-                              child: Text(perfil),
-                            );
-                          }).toList(),
-                          onChanged: (value) =>
-                              setState(() => _tipoPerfilSelecionado = value),
-                        ),
+                        Expanded(child: dataNascimentoField),
+                        const SizedBox(width: 20),
+                        Expanded(child: tipoPerfilField),
                       ],
-                    ),
-                  ),
-                ],
+                    );
+                  }
+                },
               ),
               const SizedBox(height: 60.0),
-
               Row(
                 children: [
                   if (widget.onCancel != null) ...[
@@ -184,7 +201,7 @@ class _CadastroMembroScreenState extends State<CadastroMembroScreen> {
                         ),
                         elevation: 0,
                       ),
-                      child: const Text('Cadastrar e Enviar Ativação'),
+                      child: const Text('Cadastrar'),
                     ),
                   ),
                 ],
@@ -246,7 +263,7 @@ class _CadastroMembroScreenState extends State<CadastroMembroScreen> {
       suffixIcon: isDuplicate
           ? const Tooltip(
               message: 'Este valor já está em uso.',
-              child: Icon(Icons.warning_amber_rounded, color: warningColor),
+              child: Icon(Icons.warning_amber_rounded, color: Colors.yellow),
             )
           : null,
     );
