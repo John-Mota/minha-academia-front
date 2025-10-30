@@ -24,10 +24,6 @@ class MetricCard extends StatelessWidget {
     const Color titleColor = Colors.white70;
     const Color footerColor = Colors.white54;
 
-    final Color effectiveIconColor = iconColor == Icons.monetization_on
-        ? const Color(0xFFEA4D3C)
-        : iconColor;
-
     return Container(
       decoration: BoxDecoration(
         color: effectiveCardColor,
@@ -49,7 +45,7 @@ class MetricCard extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              Icon(icon, color: effectiveIconColor, size: 24),
+              Icon(icon, color: iconColor, size: 24),
             ],
           ),
           const Spacer(),
@@ -65,12 +61,11 @@ class MetricCard extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              if (footer != null) ...[
+              if (footer != null)
                 Text(
                   footer!,
                   style: const TextStyle(color: footerColor, fontSize: 12),
                 ),
-              ],
             ],
           ),
         ],
