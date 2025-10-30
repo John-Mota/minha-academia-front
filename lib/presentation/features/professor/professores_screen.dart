@@ -122,10 +122,9 @@ class ProfessoresScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final screenHeight = MediaQuery.of(context).size.height;
-
-    const double consumedHeightEstimate = 190.0;
-    final double remainingTableHeight = screenHeight - consumedHeightEstimate;
+    final screenWidth = MediaQuery.of(context).size.width;
+    const double mobileBreakpoint = 600.0;
+    final isMobile = screenWidth < mobileBreakpoint;
 
     const List<TableColumn> professorColumns = [
       TableColumn(title: 'Nome', dataKey: 'nome', flex: 3),
@@ -136,7 +135,7 @@ class ProfessoresScreen extends StatelessWidget {
     ];
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(24.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -155,7 +154,6 @@ class ProfessoresScreen extends StatelessWidget {
           ),
 
           const SizedBox(height: 32.0),
-
           Row(
             children: [
               Expanded(
@@ -191,31 +189,39 @@ class ProfessoresScreen extends StatelessWidget {
               ),
               const SizedBox(width: 16.0),
 
-              ElevatedButton.icon(
-                onPressed: () {
-                  _showCadastroDialog(context);
-                },
-                icon: const Icon(Icons.add, size: 20, color: Colors.white),
-                label: const Text(
-                  'Novo Professor',
-                  style: TextStyle(color: Colors.white),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _primaryHighlightColor,
-                  minimumSize: const Size(140, 56),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  elevation: 0,
-                ),
-              ),
+              isMobile
+                  ? IconButton(
+                      onPressed: () => _showCadastroDialog(context),
+                      icon: const Icon(Icons.add, size: 28),
+                      color: _primaryHighlightColor,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                    )
+                  : ElevatedButton.icon(
+                      onPressed: () => _showCadastroDialog(context),
+                      icon: const Icon(
+                        Icons.add,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                      label: const Text(
+                        'Novo Professor',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _primaryHighlightColor,
+                        minimumSize: const Size(140, 56),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 0,
+                      ),
+                    ),
             ],
           ),
 
           const SizedBox(height: 20.0),
-
-          SizedBox(
-            height: remainingTableHeight - 11.0,
+          Expanded(
             child: CustomDataTable(
               title: 'Lista de Professores',
               columns: professorColumns,
@@ -235,6 +241,7 @@ class ProfessoresScreen extends StatelessWidget {
                       print(
                         'Chamado para Excluir Professor ID: ${professor['id']}',
                       );
+                      Navigator.of(context).pop();
                     },
                   ),
                 );
@@ -263,7 +270,9 @@ class ProfessoresScreen extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              maxWidth: screenWidth * 0.4,
+              maxWidth: screenWidth < 600
+                  ? screenWidth * 0.9
+                  : screenWidth * 0.4,
               maxHeight: screenHeight * 0.9,
             ),
             child: CadastroProfessorScreen(
