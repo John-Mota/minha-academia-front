@@ -2,98 +2,152 @@ import 'package:flutter/material.dart';
 
 class TableColumn {
   final String title;
+
   final String dataKey;
+
   final bool isAction;
+
   final int flex;
 
   const TableColumn({
     required this.title,
+
     required this.dataKey,
+
     this.isAction = false,
+
     this.flex = 1,
   });
 }
 
 class CustomDataTable extends StatelessWidget {
   final String title;
+
   final List<TableColumn> columns;
+
   final List<Map<String, dynamic>> data;
+
   final bool hasActions;
+
   final void Function(Map<String, dynamic> item)? onEdit;
+
   final void Function(Map<String, dynamic> item)? onDelete;
 
   const CustomDataTable({
     super.key,
+
     required this.title,
+
     required this.columns,
+
     required this.data,
+
     this.hasActions = true,
+
     this.onEdit,
+
     this.onDelete,
   });
 
   static const Color _cardBackgroundColor = Color(0xFF1A2234);
+
   static const Color _dividerColor = Color(0xFF28324A);
+
   static const double _rowHeight = 60.0;
+
   static const double _headerHeight = 48.0;
 
   Widget _buildCell(dynamic item, ThemeData theme, TableColumn column) {
     if (column.isAction) {
       return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+
         children: [
           IconButton(
             icon: const Icon(Icons.edit, size: 20),
+
             color: Colors.white.withOpacity(0.8),
+
             onPressed: onEdit != null ? () => onEdit!(item) : null,
-            padding: EdgeInsets.zero,
+
             constraints: const BoxConstraints(),
           ),
-          const SizedBox(width: 8),
+
           IconButton(
             icon: const Icon(Icons.delete, size: 20),
+
             color: Colors.redAccent,
+
             onPressed: onDelete != null ? () => onDelete!(item) : null,
-            padding: EdgeInsets.zero,
+
             constraints: const BoxConstraints(),
           ),
         ],
       );
     }
+
     final cellValue = item[column.dataKey];
+
     if (column.dataKey == 'status' || column.dataKey == 'plano') {
       return _buildStatusOrPlanChip(cellValue, theme);
     } else {
       return Text(
         cellValue?.toString() ?? '',
+
         style: theme.textTheme.bodyMedium?.copyWith(
           color: theme.colorScheme.onSurface,
         ),
+
+        overflow: TextOverflow.ellipsis,
+
+        maxLines: 1,
       );
     }
+  }
+
+  double _getColumnWidth(TableColumn column) {
+    const baseWidth = 100.0;
+
+    return baseWidth * column.flex;
+  }
+
+  double _getTotalWidth() {
+    return columns.fold(0.0, (sum, column) => sum + _getColumnWidth(column));
   }
 
   Widget _buildHeaderRow(ThemeData theme) {
     return Container(
       height: _headerHeight,
+
       decoration: const BoxDecoration(
         color: _cardBackgroundColor,
+
         border: Border(bottom: BorderSide(color: _dividerColor, width: 1.0)),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+
+      padding: const EdgeInsets.symmetric(horizontal: 0),
+
       child: Row(
         children: columns.map((column) {
-          int flexValue = column.flex;
+          return SizedBox(
+            width: _getColumnWidth(column),
 
-          return Flexible(
-            flex: flexValue,
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                column.title,
-                style: theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.onSurface.withOpacity(0.8),
+            child: Padding(
+              padding: const EdgeInsets.only(right: 0),
+
+              child: Align(
+                alignment: Alignment.center,
+
+                child: Text(
+                  column.title,
+
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+
+                    color: theme.colorScheme.onSurface.withOpacity(0.8),
+                  ),
+
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
@@ -103,39 +157,32 @@ class CustomDataTable extends StatelessWidget {
     );
   }
 
-  Widget _buildDataBody(ThemeData theme) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 4.0),
-        child: ListView.builder(
-          itemCount: data.length,
-          padding: EdgeInsets.zero,
-          itemBuilder: (context, index) {
-            final item = data[index];
-            return Container(
-              height: _rowHeight,
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: _dividerColor, width: 1.0),
-                ),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                children: columns.map((column) {
-                  int flexValue = column.flex;
+  Widget _buildDataRow(Map<String, dynamic> item, ThemeData theme) {
+    return Container(
+      height: _rowHeight,
 
-                  return Flexible(
-                    flex: flexValue,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: _buildCell(item, theme, column),
-                    ),
-                  );
-                }).toList(),
+      decoration: const BoxDecoration(
+        border: Border(bottom: BorderSide(color: _dividerColor, width: 1.0)),
+      ),
+
+      padding: const EdgeInsets.symmetric(horizontal: 0),
+
+      child: Row(
+        children: columns.map((column) {
+          return SizedBox(
+            width: _getColumnWidth(column),
+
+            child: Padding(
+              padding: const EdgeInsets.only(right: 0),
+
+              child: Align(
+                alignment: Alignment.center,
+
+                child: _buildCell(item, theme, column),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }
@@ -144,6 +191,7 @@ class CustomDataTable extends StatelessWidget {
     if (value == null) return const Text('');
 
     Color color;
+
     Color textColor = Colors.white;
 
     if (value == 'Ativo') {
@@ -167,15 +215,22 @@ class CustomDataTable extends StatelessWidget {
     return Chip(
       label: Text(
         value.toString(),
+
         style: TextStyle(
           color: textColor,
+
           fontSize: 12,
+
           fontWeight: FontWeight.bold,
         ),
       ),
+
       backgroundColor: color,
+
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+
       labelPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: -2),
+
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     );
   }
@@ -187,25 +242,50 @@ class CustomDataTable extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: _cardBackgroundColor,
+
         borderRadius: BorderRadius.circular(8),
+
         border: Border.all(color: Colors.white.withOpacity(0.3), width: 2.0),
       ),
+
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+
             child: Text(
               title,
+
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
+
                 color: theme.colorScheme.onSurface,
               ),
             ),
           ),
+
           const SizedBox(height: 6.0),
-          _buildHeaderRow(theme),
-          _buildDataBody(theme),
+          Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: MediaQuery.of(context).size.width,
+                ),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    children: [
+                      _buildHeaderRow(theme),
+                      for (var item in data) _buildDataRow(item, theme),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
