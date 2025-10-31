@@ -1,7 +1,64 @@
 import 'package:flutter/material.dart';
-import 'package:minha_academia_front/presentation/widgets/cards/inventory_summary.dart'; // Import do novo resumo
 
-// --- Modelo de Dados para o Card da Máquina ---
+class InventorySummary extends StatelessWidget {
+  const InventorySummary({super.key});
+
+  Widget _buildMetric(
+    BuildContext context,
+    ThemeData theme,
+    String count,
+    String label,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          count,
+          style: theme.textTheme.headlineMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: theme.colorScheme.primary,
+          ),
+        ),
+        SizedBox(
+          width: 120,
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.bodySmall,
+            softWrap: true,
+            maxLines: 2,
+          ),
+        ),
+        if (MediaQuery.of(context).size.width < 600) const SizedBox(height: 16),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isMobile = MediaQuery.of(context).size.width < 600;
+
+    final metrics = [
+      _buildMetric(context, theme, '5', 'Equipamentos Operacionais'),
+      _buildMetric(context, theme, '2', 'Em Manutenção'),
+      _buildMetric(context, theme, '1', 'Quebrados'),
+    ];
+
+    if (isMobile) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: metrics,
+      );
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: metrics,
+      );
+    }
+  }
+}
+
 class MachineCardData {
   final String title;
   final String id;
@@ -20,16 +77,58 @@ class MachineCardData {
   });
 }
 
-// --- Widget para o Card de Máquina (Implementação simplificada) ---
 class MachineCard extends StatelessWidget {
   final MachineCardData data;
   const MachineCard({super.key, required this.data});
+
+  Widget _buildDetailRow(ThemeData theme, String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4.0),
+      child: Row(
+        children: [
+          Text(
+            '$label: ',
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurface.withOpacity(0.6),
+            ),
+          ),
+          Flexible(
+            child: Text(
+              value,
+              style: theme.textTheme.bodySmall?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: theme.colorScheme.onSurface,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatusChip(String status, Color color) {
+    return Chip(
+      label: Text(
+        status,
+        style: const TextStyle(
+          color: Colors.black,
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      backgroundColor: color,
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+      labelPadding: const EdgeInsets.symmetric(horizontal: 6, vertical: 0),
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Card(
-      color: const Color(0xFF1A2234), // Fundo escuro do card
+      color: const Color(0xFF1A2234),
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Padding(
@@ -38,7 +137,6 @@ class MachineCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // Linha do Título e Ícone de Status
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -52,20 +150,14 @@ class MachineCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                Icon(
-                  data.icon, // Ícone de status (ex: checkmark, warning, error)
-                  color: data.statusColor,
-                  size: 20,
-                ),
+                Icon(data.icon, color: data.statusColor, size: 20),
               ],
             ),
 
-            // Detalhes da Máquina
             const SizedBox(height: 12),
             _buildDetailRow(theme, 'ID do Ativo', data.id),
             _buildDetailRow(theme, 'Última Manutenção', data.lastMaintenance),
 
-            // Linha do Status (Chip)
             const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -83,42 +175,8 @@ class MachineCard extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildDetailRow(ThemeData theme, String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 4.0),
-      child: Row(
-        children: [
-          Text(
-            '$label: ',
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurface.withOpacity(0.6),
-            ),
-          ),
-          Text(
-            value,
-            style: theme.textTheme.bodySmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: theme.colorScheme.onSurface,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatusChip(String status, Color color) {
-    return Chip(
-      label: Text(status, style: TextStyle(color: Colors.black, fontSize: 12)),
-      backgroundColor: color,
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
-      labelPadding: const EdgeInsets.symmetric(horizontal: 6, vertical: 0),
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-    );
-  }
 }
 
-// --- Tela Principal de Máquinas ---
 class MaquinasScreen extends StatelessWidget {
   const MaquinasScreen({super.key});
 
@@ -195,13 +253,13 @@ class MaquinasScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // TÍTULOS DA PÁGINA
           Text(
             'Inventário de Equipamentos',
             style: theme.textTheme.headlineMedium?.copyWith(
@@ -217,68 +275,86 @@ class MaquinasScreen extends StatelessWidget {
           ),
           const SizedBox(height: 32.0),
 
-          // 1. LINHA DE BUSCA E BOTÃO NOVO
           Row(
             children: [
               Expanded(
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Buscar máquina...',
-                    prefixIcon: const Icon(Icons.search),
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 18.0,
-                      horizontal: 16.0,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Buscar máquina...',
+                      prefixIcon: const Icon(Icons.search),
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 18.0,
+                        horizontal: 10.0,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: const BorderSide(
+                          color: _primaryHighlightColor,
+                          width: 1.0,
+                        ),
+                      ),
+                      filled: true,
+                      fillColor: _searchFieldFillColor,
                     ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(
-                        color: _primaryHighlightColor,
-                        width: 1.0,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12.0),
+
+              screenWidth < 800
+                  ? IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.add, size: 28),
+                      color: _primaryHighlightColor,
+                      constraints: const BoxConstraints.tightFor(
+                        width: 48,
+                        height: 48,
+                      ),
+                    )
+                  : ElevatedButton.icon(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.add,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                      label: const Text(
+                        'Nova Máquina',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _primaryHighlightColor,
+                        minimumSize: const Size(140, 56),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 0,
                       ),
                     ),
-                    filled: true,
-                    fillColor: _searchFieldFillColor,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 16.0),
-              ElevatedButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.add, size: 20, color: Colors.white),
-                label: const Text(
-                  'Nova Máquina',
-                  style: TextStyle(color: Colors.white),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _primaryHighlightColor,
-                  minimumSize: const Size(140, 56),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  elevation: 0,
-                ),
-              ),
             ],
           ),
-          const SizedBox(height: 32.0), // Espaçamento entre Busca e Resumo
-          // 2. RESUMO DO INVENTÁRIO (Mini-Dashboard)
+          const SizedBox(height: 32.0),
+
           const InventorySummary(),
           const SizedBox(height: 32.0),
 
-          // 3. GRID DE CARDS (Layout Responsivo)
           LayoutBuilder(
             builder: (context, constraints) {
-              final screenWidth = constraints.maxWidth;
-              // 4 cards em desktop, 2 cards em tablets/celulares
-              final crossAxisCount = screenWidth < 600
-                  ? 2
-                  : screenWidth < 900
+              final availableWidth = constraints.maxWidth;
+
+              final crossAxisCount = availableWidth < 500
+                  ? 1
+                  : availableWidth < 900
                   ? 3
                   : 4;
+
+              final aspectRatio = availableWidth < 500 ? 1.8 : 1.5;
 
               return GridView.builder(
                 shrinkWrap: true,
@@ -288,7 +364,7 @@ class MaquinasScreen extends StatelessWidget {
                   crossAxisCount: crossAxisCount,
                   crossAxisSpacing: 20.0,
                   mainAxisSpacing: 20.0,
-                  childAspectRatio: 1.5, // Proporção para este tipo de card
+                  childAspectRatio: aspectRatio,
                 ),
                 itemBuilder: (context, index) {
                   return MachineCard(data: _machineData[index]);
@@ -296,6 +372,7 @@ class MaquinasScreen extends StatelessWidget {
               );
             },
           ),
+          const SizedBox(height: 24.0),
         ],
       ),
     );
