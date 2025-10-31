@@ -71,8 +71,10 @@ class AlunosScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    const double mobileBreakpoint = 600.0;
+    final isMobile = screenWidth < mobileBreakpoint;
 
-    // Mesma lógica do ProfessoresScreen
     const double consumedHeightEstimate = 190.0;
     final double remainingTableHeight = screenHeight - consumedHeightEstimate;
 
@@ -82,11 +84,11 @@ class AlunosScreen extends StatelessWidget {
       TableColumn(title: 'Plano', dataKey: 'plano', flex: 2),
       TableColumn(title: 'Status', dataKey: 'status', flex: 2),
       TableColumn(title: 'Telefone', dataKey: 'telefone', flex: 3),
-      TableColumn(title: 'Ações', dataKey: 'id', isAction: true, flex: 1),
+      TableColumn(title: 'Ações', dataKey: 'id', isAction: true, flex: 2),
     ];
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(24.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -105,7 +107,6 @@ class AlunosScreen extends StatelessWidget {
           ),
           const SizedBox(height: 32.0),
 
-          // Campo de busca + botão igual ao dos professores
           Row(
             children: [
               Expanded(
@@ -140,31 +141,43 @@ class AlunosScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 16.0),
-              ElevatedButton.icon(
-                onPressed: () {
-                  _showCadastroDialog(context);
-                },
-                icon: const Icon(Icons.add, size: 20, color: Colors.white),
-                label: const Text(
-                  'Novo Aluno',
-                  style: TextStyle(color: Colors.white),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _primaryHighlightColor,
-                  minimumSize: const Size(140, 56),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  elevation: 0,
-                ),
-              ),
+
+              isMobile
+                  ? IconButton(
+                      onPressed: () => _showCadastroDialog(context),
+                      icon: const Icon(Icons.add, size: 28),
+                      color: _primaryHighlightColor,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                    )
+                  : ElevatedButton.icon(
+                      onPressed: () {
+                        _showCadastroDialog(context);
+                      },
+                      icon: const Icon(
+                        Icons.add,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                      label: const Text(
+                        'Novo Aluno',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _primaryHighlightColor,
+                        minimumSize: const Size(140, 56),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 0,
+                      ),
+                    ),
             ],
           ),
 
           const SizedBox(height: 20.0),
 
-          SizedBox(
-            height: remainingTableHeight - 11.0, // mesma proporção da tela
+          Expanded(
             child: CustomDataTable(
               title: 'Lista de Alunos',
               columns: alunoColumns,
@@ -182,6 +195,7 @@ class AlunosScreen extends StatelessWidget {
                         'Tem certeza de que deseja excluir o aluno ${aluno['nome']}? Esta ação não pode ser desfeita.',
                     onConfirm: () {
                       print('Chamado para Excluir Aluno ID: ${aluno['id']}');
+                      Navigator.of(context).pop();
                     },
                   ),
                 );
