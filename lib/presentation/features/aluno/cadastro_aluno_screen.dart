@@ -6,9 +6,15 @@ import 'package:minha_academia_front/utils/formatters/inputs_formatters.dart';
 
 class CadastroAlunoScreen extends StatefulWidget {
   final VoidCallback? onCancel;
+  final VoidCallback? onSave; // Callback chamado ao salvar/cadastrar
   final Map<String, dynamic>? aluno;
 
-  const CadastroAlunoScreen({super.key, this.onCancel, this.aluno});
+  const CadastroAlunoScreen({
+    super.key,
+    this.onCancel,
+    this.onSave,
+    this.aluno,
+  });
 
   @override
   State<CadastroAlunoScreen> createState() => _CadastroAlunoScreenState();
@@ -236,6 +242,7 @@ class _CadastroAlunoScreenState extends State<CadastroAlunoScreen> {
                                 print(
                                   'Salvando alterações para o aluno ID: ${widget.aluno!['id']}',
                                 );
+                                if (widget.onSave != null) widget.onSave!();
                                 Navigator.of(mainDialogContext).pop();
                               },
                             ),
@@ -251,6 +258,7 @@ class _CadastroAlunoScreenState extends State<CadastroAlunoScreen> {
                                 print(
                                   'Cadastrando e enviando ativação para o novo aluno.',
                                 );
+                                if (widget.onSave != null) widget.onSave!();
                                 Navigator.of(mainDialogContext).pop();
                               },
                             ),
