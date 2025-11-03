@@ -31,4 +31,17 @@ class ProfessorResponseDto {
       ativo: json['ativo'] as bool? ?? true,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'nome': nome,
+      'cref': cref,
+      'email': email,
+      'cpf': cpf,
+      'status': status,
+      'telefone': telefone,
+      'ativo': ativo,
+    };
+  }
 }

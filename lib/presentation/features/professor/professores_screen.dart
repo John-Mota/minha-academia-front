@@ -1,123 +1,96 @@
 import 'package:flutter/material.dart';
-import 'package:minha_academia_front/presentation/features/professor/cadastro_professor_screen.dart';
+import 'package:minha_academia_front/domain/model/response/professor_response_dto.dart';
+import 'package:minha_academia_front/domain/model/request/professor_request_dto.dart';
+import 'package:minha_academia_front/data/services/professor_service.dart';
 import 'package:minha_academia_front/presentation/widgets/table/custom_data_table.dart';
 import 'package:minha_academia_front/presentation/widgets/dialog/confirmation_dialog.dart';
+import 'package:minha_academia_front/presentation/features/professor/cadastro_professor_screen.dart';
 
-class ProfessoresScreen extends StatelessWidget {
+class ProfessoresScreen extends StatefulWidget {
   const ProfessoresScreen({super.key});
 
-  final List<Map<String, dynamic>> _professorData = const [
-    {
-      'id': 101,
-      'nome': 'Dr. Roberto Lima',
-      'cref': '012345-G/SP',
-      'email': 'roberto.lima@email.com',
-      'cpf': '111.111.111-11',
-      'status': 'Ativo',
-      'telefone': '(11) 98765-4321',
-    },
-    {
-      'id': 102,
-      'nome': 'Mariana Costa',
-      'cref': '054321-G/MG',
-      'email': 'mariana.costa@email.com',
-      'cpf': '222.222.222-22',
-      'status': 'Ativo',
-      'telefone': '(11) 98765-1234',
-    },
-    {
-      'id': 103,
-      'nome': 'Fernando Silva',
-      'cref': '098765-G/RJ',
-      'email': 'fernando.silva@email.com',
-      'cpf': '333.333.333-33',
-      'status': 'Não Ativo',
-      'telefone': '(11) 98765-5678',
-    },
-    {
-      'id': 104,
-      'nome': 'Juliana Santos',
-      'cref': '135790-G/PR',
-      'email': 'juliana.santos@email.com',
-      'cpf': '444.444.444-44',
-      'status': 'Ativo',
-      'telefone': '(11) 98765-9012',
-    },
-    {
-      'id': 105,
-      'nome': 'André Oliveira',
-      'cref': '246802-G/SP',
-      'email': 'andre.oliveira@email.com',
-      'cpf': '555.555.555-55',
-      'status': 'Não Ativo',
-      'telefone': '(11) 98765-3456',
-    },
-    {
-      'id': 106,
-      'nome': 'Carla Pimenta',
-      'cref': '333444-G/SP',
-      'email': 'carla.pimenta@email.com',
-      'cpf': '666.666.666-66',
-      'status': 'Ativo',
-      'telefone': '(11) 98765-1111',
-    },
-    {
-      'id': 107,
-      'nome': 'Pedro Rocha',
-      'cref': '555666-G/MG',
-      'email': 'pedro.rocha@email.com',
-      'cpf': '777.777.777-77',
-      'status': 'Ativo',
-      'telefone': '(11) 98765-2222',
-    },
-    {
-      'id': 108,
-      'nome': 'Beatriz Motta',
-      'cref': '777888-G/RJ',
-      'email': 'beatriz.motta@email.com',
-      'cpf': '888.888.888-88',
-      'status': 'Ativo',
-      'telefone': '(11) 98765-3333',
-    },
-    {
-      'id': 109,
-      'nome': 'Rafael Souza',
-      'cref': '999000-G/PR',
-      'email': 'rafael.souza@email.com',
-      'cpf': '999.999.999-99',
-      'status': 'Não Ativo',
-      'telefone': '(11) 98765-4444',
-    },
-    {
-      'id': 110,
-      'nome': 'Tatiana Alves',
-      'cref': '121212-G/SP',
-      'email': 'tatiana.alves@email.com',
-      'cpf': '101.010.101-01',
-      'status': 'Ativo',
-      'telefone': '(11) 98765-5555',
-    },
-    {
-      'id': 111,
-      'nome': 'Márcio Gomes',
-      'cref': '343434-G/SP',
-      'email': 'marcio.gomes@email.com',
-      'cpf': '123.456.789-00',
-      'status': 'Ativo',
-      'telefone': '(11) 98765-6666',
-    },
-    {
-      'id': 112,
-      'nome': 'Nome não informado',
-      'cref': '565656-G/MG',
-      'email': 'naoinformado@email.com',
-      'cpf': '000.000.000-00',
-      'status': 'Não Ativo',
-      'telefone': '(11) 98765-7777',
-    },
-  ];
-  static const Color _searchFieldFillColor = Color(0xFF1E2638);
+  @override
+  State<ProfessoresScreen> createState() => _ProfessoresScreenState();
+}
+
+class _ProfessoresScreenState extends State<ProfessoresScreen> {
+  List<ProfessorResponseDto> _professores = [];
+  bool _isLoading = true;
+
   static const Color _primaryHighlightColor = Color(0xFFEA4D3C);
+  static const Color _searchFieldFillColor = Color(0xFF1E2638);
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfessores();
+  }
+
+  Future<void> _loadProfessores() async {
+    final data = await ProfessorService.fetchAllProfessors(
+      includeInactive: true,
+    );
+    setState(() {
+      _professores = data;
+      _isLoading = false;
+    });
+  }
+
+  void _onDeleteProfessor(Map<String, dynamic> professor) {
+    showDialog(
+      context: context,
+      builder: (context) => ConfirmationDialog(
+        title: 'Confirmar Exclusão',
+        content:
+            'Tem certeza de que deseja inativar o professor ${professor['nome']}?',
+        onConfirm: () async {
+          await ProfessorService.deleteProfessor(professor['id']);
+          await _loadProfessores();
+          Navigator.of(context).pop();
+        },
+      ),
+    );
+  }
+
+  void _onEditProfessor(Map<String, dynamic> professor) {
+    _showCadastroDialog(context, professor: professor);
+  }
+
+  void _onCreateProfessor() {
+    _showCadastroDialog(context);
+  }
+
+  void _showCadastroDialog(
+    BuildContext context, {
+    Map<String, dynamic>? professor,
+  }) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        final screenHeight = MediaQuery.of(context).size.height;
+        final screenWidth = MediaQuery.of(context).size.width;
+
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4.0),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: screenWidth < 600
+                  ? screenWidth * 0.9
+                  : screenWidth * 0.4,
+              maxHeight: screenHeight * 0.9,
+            ),
+            child: CadastroProfessorScreen(
+              professor: professor,
+              onCancel: () => Navigator.of(context).pop(),
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -133,6 +106,10 @@ class ProfessoresScreen extends StatelessWidget {
       TableColumn(title: 'Status', dataKey: 'status', flex: 2),
       TableColumn(title: 'Ações', dataKey: 'id', isAction: true, flex: 1),
     ];
+
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
     return Padding(
       padding: const EdgeInsets.all(24.0),
@@ -188,17 +165,16 @@ class ProfessoresScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 16.0),
-
               isMobile
                   ? IconButton(
-                      onPressed: () => _showCadastroDialog(context),
+                      onPressed: _onCreateProfessor,
                       icon: const Icon(Icons.add, size: 28),
                       color: _primaryHighlightColor,
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(),
                     )
                   : ElevatedButton.icon(
-                      onPressed: () => _showCadastroDialog(context),
+                      onPressed: _onCreateProfessor,
                       icon: const Icon(
                         Icons.add,
                         size: 20,
@@ -225,63 +201,14 @@ class ProfessoresScreen extends StatelessWidget {
             child: CustomDataTable(
               title: 'Lista de Professores',
               columns: professorColumns,
-              data: _professorData,
+              data: _professores.map((p) => p.toJson()).toList(),
               hasActions: true,
-              onEdit: (professor) {
-                _showCadastroDialog(context, professor: professor);
-              },
-              onDelete: (professor) {
-                showDialog(
-                  context: context,
-                  builder: (context) => ConfirmationDialog(
-                    title: 'Confirmar Exclusão',
-                    content:
-                        'Tem certeza de que deseja excluir o professor ${professor['nome']}? Esta ação não pode ser desfeita.',
-                    onConfirm: () {
-                      print(
-                        'Chamado para Excluir Professor ID: ${professor['id']}',
-                      );
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                );
-              },
+              onEdit: _onEditProfessor,
+              onDelete: _onDeleteProfessor,
             ),
           ),
         ],
       ),
-    );
-  }
-
-  void _showCadastroDialog(
-    BuildContext context, {
-    Map<String, dynamic>? professor,
-  }) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        final screenHeight = MediaQuery.of(context).size.height;
-        final screenWidth = MediaQuery.of(context).size.width;
-
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4.0),
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: screenWidth < 600
-                  ? screenWidth * 0.9
-                  : screenWidth * 0.4,
-              maxHeight: screenHeight * 0.9,
-            ),
-            child: CadastroProfessorScreen(
-              professor: professor,
-              onCancel: () => Navigator.of(context).pop(),
-            ),
-          ),
-        );
-      },
     );
   }
 }
