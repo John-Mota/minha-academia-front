@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minha_academia_front/presentation/features/aluno/alunos_screen.dart';
+import 'package:minha_academia_front/presentation/features/aulas/aulas_screen.dart';
 import 'package:minha_academia_front/presentation/features/dashboard/dashboard_content.dart';
 import 'package:minha_academia_front/presentation/features/maquinas/MaquinasScreen.dart';
 import 'package:minha_academia_front/presentation/features/professor/professores_screen.dart';
@@ -22,6 +23,7 @@ class _HomeState extends State<Home> {
     const ProfessoresScreen(),
     const MaquinasScreen(),
     const TreinosScreen(),
+    const AulasScreen(),
     const Center(child: Text('Página de Relatórios')),
   ];
 
@@ -106,9 +108,15 @@ class _HomeState extends State<Home> {
           isMobile: isMobile,
         ),
         _buildMenuItem(
+          label: 'Aulas',
+          icon: Icons.sports_gymnastics,
+          index: 5,
+          isMobile: isMobile,
+        ),
+        _buildMenuItem(
           label: 'Relatórios',
           icon: Icons.assessment,
-          index: 5,
+          index: 6,
           isMobile: isMobile,
         ),
       ],

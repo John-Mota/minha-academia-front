@@ -25,14 +25,7 @@ class _AlunosScreenState extends State<AlunosScreen> {
   Future<void> _loadAlunos() async {
     setState(() => _loading = true);
 
-    // Inclui todos os alunos do mock, inclusive os inativos
     final alunos = await AlunoService.fetchAllAlunos(includeInactive: true);
-
-    print('FetchAllAlunos retornou: $alunos'); // DEBUG
-
-    for (var aluno in alunos) {
-      print('Aluno recebido: ${aluno.toJson()}');
-    }
 
     setState(() {
       _alunos = alunos;
@@ -45,6 +38,9 @@ class _AlunosScreenState extends State<AlunosScreen> {
     final theme = Theme.of(context);
     const Color _searchFieldFillColor = Color(0xFF1E2638);
     const Color _primaryHighlightColor = Color(0xFFEA4D3C);
+    final screenWidth = MediaQuery.of(context).size.width;
+    const double mobileBreakpoint = 600.0;
+    final isMobile = screenWidth < mobileBreakpoint;
 
     const List<TableColumn> alunoColumns = [
       TableColumn(title: 'Nome', dataKey: 'nome', flex: 3),
@@ -108,22 +104,34 @@ class _AlunosScreenState extends State<AlunosScreen> {
                 ),
               ),
               const SizedBox(width: 16),
-              ElevatedButton.icon(
-                onPressed: () => _showCadastroDialog(context),
-                icon: const Icon(Icons.add, size: 20, color: Colors.white),
-                label: const Text(
-                  'Novo Aluno',
-                  style: TextStyle(color: Colors.white),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _primaryHighlightColor,
-                  minimumSize: const Size(140, 56),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  elevation: 0,
-                ),
-              ),
+              isMobile
+                  ? IconButton(
+                      onPressed: _onCreateAluno,
+                      icon: const Icon(Icons.add, size: 28),
+                      color: _primaryHighlightColor,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                    )
+                  : ElevatedButton.icon(
+                      onPressed: _onCreateAluno,
+                      icon: const Icon(
+                        Icons.add,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                      label: const Text(
+                        'Novo Professor',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _primaryHighlightColor,
+                        minimumSize: const Size(140, 56),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 0,
+                      ),
+                    ),
             ],
           ),
           const SizedBox(height: 20),
@@ -158,6 +166,10 @@ class _AlunosScreenState extends State<AlunosScreen> {
         ],
       ),
     );
+  }
+
+  void _onCreateAluno() {
+    _showCadastroDialog(context);
   }
 
   void _showCadastroDialog(

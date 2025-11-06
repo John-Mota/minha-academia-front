@@ -163,6 +163,56 @@
       "ativo": true
     }
   ],
+  "aulas": [
+    {
+      "id": 201,
+      "nome": "Spinning",
+      "professorId": 101,
+      "descricao": "Aula intensa de ciclismo indoor para queimar calorias e melhorar a resistência cardiovascular.",
+      "capacidade": 20,
+      "vagasOcupadas": 15,
+      "duracaoMinutos": 45,
+      "diasSemana": ["Segunda", "Quarta", "Sexta"],
+      "horario": "18:00",
+      "ativo": true
+    },
+    {
+      "id": 202,
+      "nome": "Yoga",
+      "professorId": 102,
+      "descricao": "Aula de Yoga para todos os níveis, focada em flexibilidade, força e relaxamento.",
+      "capacidade": 25,
+      "vagasOcupadas": 22,
+      "duracaoMinutos": 60,
+      "diasSemana": ["Terça", "Quinta"],
+      "horario": "08:00",
+      "ativo": true
+    },
+    {
+      "id": 203,
+      "nome": "Funcional",
+      "professorId": 104,
+      "descricao": "Treinamento funcional para melhorar a força, agilidade e coordenação.",
+      "capacidade": 15,
+      "vagasOcupadas": 15,
+      "duracaoMinutos": 50,
+      "diasSemana": ["Segunda", "Quarta"],
+      "horario": "19:00",
+      "ativo": true
+    },
+    {
+      "id": 204,
+      "nome": "Pilates",
+      "professorId": 108,
+      "descricao": "Aula de Pilates para fortalecimento do core e melhoria da postura.",
+      "capacidade": 12,
+      "vagasOcupadas": 10,
+      "duracaoMinutos": 60,
+      "diasSemana": ["Sexta"],
+      "horario": "09:00",
+      "ativo": false
+    }
+  ],
   "usuarios": [
     {
       "id": 1,
