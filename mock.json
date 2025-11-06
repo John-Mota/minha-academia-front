@@ -112,7 +112,14 @@
       "cpf": "111.111.111-11",
       "dataNascimento": "10/05/1990",
       "telefone": "(11) 99999-1234",
-      "ativo": true
+      "ativo": true,
+      "endereco": {
+        "cep": "60115-000",
+        "rua": "Rua Silva",
+        "bairro": "Aldeota",
+        "cidade": "Fortaleza",
+        "complemento": "Apto 101"
+      }
     },
     {
       "id": 2,
@@ -124,7 +131,14 @@
       "cpf": "222.222.222-22",
       "dataNascimento": "15/08/1985",
       "telefone": "(11) 99999-5678",
-      "ativo": true
+      "ativo": true,
+      "endereco": {
+        "cep": "60125-000",
+        "rua": "Av. Beira Mar",
+        "bairro": "Meireles",
+        "cidade": "Fortaleza",
+        "complemento": "Ed. Mar"
+      }
     },
     {
       "id": 3,
@@ -136,7 +150,14 @@
       "cpf": "333.333.333-33",
       "dataNascimento": "20/11/2000",
       "telefone": "(11) 99999-9012",
-      "ativo": false
+      "ativo": false,
+      "endereco": {
+        "cep": "60175-000",
+        "rua": "Rua dos Papagaios",
+        "bairro": "Papicu",
+        "cidade": "Fortaleza",
+        "complemento": "Casa"
+      }
     },
     {
       "id": 4,
@@ -148,7 +169,14 @@
       "cpf": "444.444.444-44",
       "dataNascimento": "01/02/1998",
       "telefone": "(11) 99999-3456",
-      "ativo": true
+      "ativo": true,
+      "endereco": {
+        "cep": "60010-000",
+        "rua": "Rua do Comércio",
+        "bairro": "Centro",
+        "cidade": "Fortaleza",
+        "complemento": "Sala 5"
+      }
     },
     {
       "id": 5,
@@ -160,7 +188,109 @@
       "cpf": "555.555.555-55",
       "dataNascimento": "30/07/1995",
       "telefone": "(11) 99999-7890",
-      "ativo": true
+      "ativo": true,
+      "endereco": {
+        "cep": "60170-000",
+        "rua": "Rua dos Restaurantes",
+        "bairro": "Aldeota",
+        "cidade": "Fortaleza",
+        "complemento": "Cond. Sol"
+      }
+    },
+    {
+      "id": 6,
+      "nome": "Pedro Gomes",
+      "matricula": "FP006",
+      "plano": "Básico",
+      "status": "Ativo",
+      "email": "pedro.gomes@email.com",
+      "cpf": "666.666.666-66",
+      "dataNascimento": "05/03/1993",
+      "telefone": "(11) 99999-6666",
+      "ativo": true,
+      "endereco": {
+        "cep": "60130-000",
+        "rua": "Rua das Flores",
+        "bairro": "Aldeota",
+        "cidade": "Fortaleza",
+        "complemento": "Apto 302"
+      }
+    },
+    {
+      "id": 7,
+      "nome": "Sofia Reis",
+      "matricula": "FP007",
+      "plano": "Premium",
+      "status": "Ativo",
+      "email": "sofia.reis@email.com",
+      "cpf": "777.777.777-77",
+      "dataNascimento": "12/10/1988",
+      "telefone": "(11) 99999-7777",
+      "ativo": true,
+      "endereco": {
+        "cep": "60140-000",
+        "rua": "Rua da Paz",
+        "bairro": "Aldeota",
+        "cidade": "Fortaleza",
+        "complemento": "Casa 2"
+      }
+    },
+    {
+      "id": 8,
+      "nome": "Mateus Nunes",
+      "matricula": "FP008",
+      "plano": "Intermediário",
+      "status": "Ativo",
+      "email": "mateus.nunes@email.com",
+      "cpf": "888.888.888-88",
+      "dataNascimento": "25/06/2001",
+      "telefone": "(11) 99999-8888",
+      "ativo": true,
+      "endereco": {
+        "cep": "60135-000",
+        "rua": "Av. Abolição",
+        "bairro": "Meireles",
+        "cidade": "Fortaleza",
+        "complemento": "Apto 705"
+      }
+    },
+    {
+      "id": 9,
+      "nome": "Livia Mota",
+      "matricula": "FP009",
+      "plano": "Básico",
+      "status": "Ativo",
+      "email": "livia.mota@email.com",
+      "cpf": "999.999.999-99",
+      "dataNascimento": "18/01/1997",
+      "telefone": "(11) 99999-9999",
+      "ativo": true,
+      "endereco": {
+        "cep": "60145-000",
+        "rua": "Rua Tibúrcio",
+        "bairro": "Meireles",
+        "cidade": "Fortaleza",
+        "complemento": "Loft 201"
+      }
+    },
+    {
+      "id": 10,
+      "nome": "Gabriel Lopes",
+      "matricula": "FP010",
+      "plano": "Premium",
+      "status": "Ativo",
+      "email": "gabriel.lopes@email.com",
+      "cpf": "101.101.101-01",
+      "dataNascimento": "08/09/1992",
+      "telefone": "(11) 99999-1010",
+      "ativo": true,
+      "endereco": {
+        "cep": "60180-000",
+        "rua": "Av. Santos Dumont",
+        "bairro": "Papicu",
+        "cidade": "Fortaleza",
+        "complemento": "Sala 120"
+      }
     }
   ],
   "aulas": [
