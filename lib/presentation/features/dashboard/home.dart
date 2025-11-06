@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:minha_academia_front/presentation/features/aluno/alunos_screen.dart';
 import 'package:minha_academia_front/presentation/features/aulas/aulas_screen.dart';
 import 'package:minha_academia_front/presentation/features/dashboard/dashboard_content.dart';
+import 'package:minha_academia_front/presentation/features/mapa/mapaScreen.dart';
 import 'package:minha_academia_front/presentation/features/maquinas/MaquinasScreen.dart';
 import 'package:minha_academia_front/presentation/features/professor/professores_screen.dart';
 import 'package:minha_academia_front/presentation/features/treinos/TreinosScreen.dart';
@@ -24,7 +25,7 @@ class _HomeState extends State<Home> {
     const MaquinasScreen(),
     const TreinosScreen(),
     const AulasScreen(),
-    const Center(child: Text('Página de Relatórios')),
+    const MapScreen(),
   ];
 
   void _onMenuItemSelected(int index, {bool closeDrawer = false}) {
