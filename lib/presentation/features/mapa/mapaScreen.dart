@@ -4,8 +4,6 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
-// --- Lógica de Carregamento de Dados ---
-
 Future<Map<String, dynamic>> _loadGeoJson() async {
   try {
     final String response = await rootBundle.loadString(
@@ -49,25 +47,21 @@ Future<Map<String, dynamic>> _loadAllMapData() async {
   }
 }
 
-// --- Lógica de Estilização ---
-
 Color _getFillColor(String bairro, Map<String, int> alunoCount) {
   final count = alunoCount[bairro] ?? 0;
   switch (count) {
     case 0:
-      return const Color(0xFF3a4050).withOpacity(0.8); // Cinza escuro
+      return const Color(0xFF3a4050).withOpacity(0.8);
     case 1:
       return Colors.green[200]!.withOpacity(0.7);
     case 2:
       return Colors.yellow[400]!.withOpacity(0.8);
     case 3:
       return Colors.orange[600]!.withOpacity(0.8);
-    default: // 4 ou mais
+    default:
       return Colors.red[700]!.withOpacity(0.8);
   }
 }
-
-// --- Widget da Tela ---
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -78,6 +72,12 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   late Future<Map<String, dynamic>> _mapDataFuture;
+
+  final MapController _mapController = MapController();
+  final LatLngBounds _fortalezaBounds = LatLngBounds(
+    const LatLng(-3.9500, -38.7000),
+    const LatLng(-3.6500, -38.3500),
+  );
 
   @override
   void initState() {
@@ -156,9 +156,7 @@ class _MapScreenState extends State<MapScreen> {
           }
         }
       }
-    } catch (e) {
-      // Erro silencioso
-    }
+    } catch (e) {}
 
     return polygons;
   }
@@ -197,7 +195,6 @@ class _MapScreenState extends State<MapScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Cabeçalho
             const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -217,8 +214,6 @@ class _MapScreenState extends State<MapScreen> {
               ],
             ),
             const SizedBox(height: 28),
-
-            // Card do Mapa
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
@@ -313,23 +308,27 @@ class _MapScreenState extends State<MapScreen> {
                       child: Stack(
                         children: [
                           FlutterMap(
+                            mapController: _mapController,
                             options: MapOptions(
                               initialCenter: const LatLng(-3.7319, -38.5267),
-                              initialZoom: 12.0,
-                              minZoom: 00.0,
-                              maxZoom: 18.0,
+                              initialZoom: 14.0,
+                              minZoom: 12.0,
+                              maxZoom: 16.0,
                               interactionOptions: const InteractionOptions(
                                 flags:
                                     InteractiveFlag.all &
                                     ~InteractiveFlag.rotate,
                               ),
-                              cameraConstraint: CameraConstraint.contain(
-                                bounds: LatLngBounds(
-                                  const LatLng(-3.9500, -38.7000),
-                                  const LatLng(-3.6500, -38.3500),
-                                ),
-                              ),
                               backgroundColor: Colors.grey[300]!,
+
+                              onMapReady: () {
+                                _mapController.fitCamera(
+                                  CameraFit.bounds(
+                                    bounds: _fortalezaBounds,
+                                    padding: const EdgeInsets.all(20.0),
+                                  ),
+                                );
+                              },
                             ),
                             children: [
                               TileLayer(
@@ -341,7 +340,30 @@ class _MapScreenState extends State<MapScreen> {
                               PolygonLayer(polygons: polygons),
                             ],
                           ),
-                          // Legenda
+
+                          Positioned(
+                            top: 20,
+                            right: 20,
+                            child: FloatingActionButton(
+                              mini: true,
+                              backgroundColor: const Color(
+                                0xFFff6b6b,
+                              ).withOpacity(0.9),
+                              onPressed: () {
+                                _mapController.fitCamera(
+                                  CameraFit.bounds(
+                                    bounds: _fortalezaBounds,
+                                    padding: const EdgeInsets.all(40.0),
+                                  ),
+                                );
+                              },
+                              child: const Icon(
+                                Icons.zoom_out_map,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+
                           Positioned(
                             bottom: 20,
                             right: 20,
