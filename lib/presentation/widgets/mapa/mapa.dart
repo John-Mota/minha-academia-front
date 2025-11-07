@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 
 class MapaWidget extends StatefulWidget {
   final Map<String, dynamic> geoJsonData;
@@ -250,7 +251,8 @@ class _MapaWidgetState extends State<MapaWidget> {
           TileLayer(
             urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
             userAgentPackageName: 'com.academia.fortaleza',
-            tileProvider: NetworkTileProvider(),
+            // Substituição para o provider otimizado
+            tileProvider: CancellableNetworkTileProvider(),
           ),
           if (_polygons.isNotEmpty) PolygonLayer(polygons: _polygons),
           if (_labels.isNotEmpty) MarkerLayer(markers: _labels),
