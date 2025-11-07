@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:minha_academia_front/presentation/features/treinos/TreinoFormScreen.dart';
+import 'package:minha_academia_front/presentation/features/treinos/treino_form_screen.dart';
 
 class TreinosScreen extends StatefulWidget {
   const TreinosScreen({super.key});

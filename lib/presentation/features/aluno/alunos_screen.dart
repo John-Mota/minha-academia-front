@@ -36,8 +36,8 @@ class _AlunosScreenState extends State<AlunosScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    const Color _searchFieldFillColor = Color(0xFF1E2638);
-    const Color _primaryHighlightColor = Color(0xFFEA4D3C);
+    const Color searchFieldFillColor = Color(0xFF1E2638);
+    const Color primaryHighlightColor = Color(0xFFEA4D3C);
     final screenWidth = MediaQuery.of(context).size.width;
     const double mobileBreakpoint = 600.0;
     final isMobile = screenWidth < mobileBreakpoint;
@@ -77,11 +77,11 @@ class _AlunosScreenState extends State<AlunosScreen> {
                   decoration: InputDecoration(
                     hintText: 'Buscar aluno...',
                     hintStyle: TextStyle(
-                      color: theme.colorScheme.onSurface.withOpacity(0.5),
+                      color: theme.colorScheme.onSurface.withValues(alpha: 128),
                     ),
                     prefixIcon: const Icon(Icons.search),
-                    prefixIconColor: theme.colorScheme.onSurface.withOpacity(
-                      0.8,
+                    prefixIconColor: theme.colorScheme.onSurface.withValues(
+                      alpha: 255,
                     ),
                     contentPadding: const EdgeInsets.symmetric(
                       vertical: 18,
@@ -94,12 +94,12 @@ class _AlunosScreenState extends State<AlunosScreen> {
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: const BorderSide(
-                        color: _primaryHighlightColor,
+                        color: primaryHighlightColor,
                         width: 1,
                       ),
                     ),
                     filled: true,
-                    fillColor: _searchFieldFillColor,
+                    fillColor: searchFieldFillColor,
                   ),
                 ),
               ),
@@ -108,7 +108,7 @@ class _AlunosScreenState extends State<AlunosScreen> {
                   ? IconButton(
                       onPressed: _onCreateAluno,
                       icon: const Icon(Icons.add, size: 28),
-                      color: _primaryHighlightColor,
+                      color: primaryHighlightColor,
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(),
                     )
@@ -124,7 +124,7 @@ class _AlunosScreenState extends State<AlunosScreen> {
                         style: TextStyle(color: Colors.white),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: _primaryHighlightColor,
+                        backgroundColor: primaryHighlightColor,
                         minimumSize: const Size(140, 56),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
@@ -154,8 +154,11 @@ class _AlunosScreenState extends State<AlunosScreen> {
                           content:
                               'Tem certeza de que deseja excluir o aluno ${aluno['nome']}?',
                           onConfirm: () async {
+                            final navigator = Navigator.of(context);
+
                             await AlunoService.deleteAluno(aluno['id']);
-                            Navigator.of(context).pop();
+                            navigator.pop();
+
                             _loadAlunos();
                           },
                         ),

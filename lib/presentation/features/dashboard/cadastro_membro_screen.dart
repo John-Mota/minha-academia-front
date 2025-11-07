@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:minha_academia_front/utils/constants/colors.dart';
 import 'package:minha_academia_front/utils/formatters/inputs_formatters.dart';
 
 class CadastroMembroScreen extends StatefulWidget {
@@ -131,7 +130,7 @@ class _CadastroMembroScreenState extends State<CadastroMembroScreen> {
                       ),
                       const SizedBox(height: 8.0),
                       DropdownButtonFormField<String>(
-                        value: _tipoPerfilSelecionado,
+                        initialValue: _tipoPerfilSelecionado,
                         hint: const Text('Selecione um perfil'),
                         dropdownColor: _fieldFillColor,
                         decoration: _inputDecoration(
@@ -211,7 +210,7 @@ class _CadastroMembroScreenState extends State<CadastroMembroScreen> {
                 'Ao cadastrar, um link seguro para criação de senha será enviado ao e-mail informado. O usuário terá o status PENDENTE até a ativação.',
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                  color: theme.colorScheme.onSurface.withAlpha(153),
                 ),
               ),
             ],

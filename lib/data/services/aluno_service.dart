@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:flutter/foundation.dart';
 import 'package:minha_academia_front/domain/model/request/aluno_request_dto.dart';
 import 'package:minha_academia_front/domain/model/response/aluno_response_dto.dart';
 
@@ -11,18 +10,11 @@ class AlunoService {
   static const String _alunosKey = 'alunos';
 
   static List<AlunoResponseDto>? _alunosCache;
-
-  // Carrega o JSON e inicializa cache
   static Future<void> _ensureCacheIsLoaded() async {
     if (_alunosCache != null) return;
 
     try {
-      // Carrega o mock da raiz
       final String response = await rootBundle.loadString(_mockPath);
-
-      // DEBUG: mostra caminho e conteúdo do JSON
-      print('📂 Caminho do mock usado: $_mockPath');
-      print('📄 Conteúdo carregado do mock:\n$response');
 
       final dynamic data = json.decode(response);
       List<dynamic> alunosJsonList;
@@ -36,16 +28,12 @@ class AlunoService {
       _alunosCache = alunosJsonList
           .map((json) => AlunoResponseDto.fromJson(json))
           .toList();
-
-      print('✅ Alunos carregados: ${_alunosCache!.length}');
-    } catch (e, st) {
-      debugPrint('❌ Erro ao carregar o cache de alunos: $e\n$st');
+    } catch (e) {
       _alunosCache = [];
       throw Exception('Falha na inicialização dos dados de alunos.');
     }
   }
 
-  // Retorna todos os alunos, com opção de incluir inativos
   static Future<List<AlunoResponseDto>> fetchAllAlunos({
     bool includeInactive = false,
   }) async {
@@ -148,7 +136,6 @@ class AlunoService {
   }
 }
 
-// Extension para firstWhereOrNull
 extension IterableExtensions<T> on Iterable<T> {
   T? firstWhereOrNull(bool Function(T element) test) {
     for (var element in this) {

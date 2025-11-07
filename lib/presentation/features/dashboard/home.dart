@@ -113,7 +113,7 @@ class Home extends StatelessWidget {
             isMobile: isMobile,
             isCollapsed: isCollapsed,
           );
-        }).toList(),
+        }),
       ],
     );
   }

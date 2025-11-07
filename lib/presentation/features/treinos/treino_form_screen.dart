@@ -56,7 +56,7 @@ class _TreinoFormCardState extends State<TreinoFormCard> {
           const SizedBox(height: 8),
           DropdownButtonFormField<String>(
             dropdownColor: _searchFieldFillColor,
-            value: value,
+            initialValue: value,
             decoration: InputDecoration(
               hintText: hint,
               contentPadding: const EdgeInsets.symmetric(
@@ -206,16 +206,16 @@ class _TreinoFormCardState extends State<TreinoFormCard> {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: widget.onClose,
-              child: const Text(
-                'Salvar Treino',
-                style: TextStyle(color: Colors.white),
-              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: _primaryHighlightColor,
                 minimumSize: const Size(double.infinity, 56),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
+              ),
+              child: const Text(
+                'Salvar Treino',
+                style: TextStyle(color: Colors.white),
               ),
             ),
           ),

@@ -199,9 +199,6 @@ class _CadastroProfessorScreenState extends State<CadastroProfessorScreen> {
                                   'Deseja salvar as alterações feitas no cadastro de ${widget.professor!['nome']}?',
                               confirmText: 'Salvar',
                               onConfirm: () {
-                                print(
-                                  'Salvando alterações para o professor ID: ${widget.professor!['id']}',
-                                );
                                 Navigator.of(mainDialogContext).pop();
                               },
                             ),
@@ -214,9 +211,6 @@ class _CadastroProfessorScreenState extends State<CadastroProfessorScreen> {
                               content: 'Deseja cadastrar o novo professor?',
                               confirmText: 'Cadastrar',
                               onConfirm: () {
-                                print(
-                                  'Cadastrando e enviando ativação para o novo professor.',
-                                );
                                 Navigator.of(mainDialogContext).pop();
                               },
                             ),
@@ -243,7 +237,7 @@ class _CadastroProfessorScreenState extends State<CadastroProfessorScreen> {
                 'Ao cadastrar, um link seguro para criação de senha será enviado ao e-mail informado. O usuário terá o status PENDENTE até a ativação.',
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                  color: theme.colorScheme.onSurface.withValues(alpha: 153),
                 ),
               ),
             ],

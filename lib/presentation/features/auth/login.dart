@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:minha_academia_front/data/services/auth_service.dart';
-import 'package:minha_academia_front/domain/model/request/login_request_dto.dart';
-import 'package:minha_academia_front/domain/model/response/login_response_dto.dart';
 import 'package:minha_academia_front/data/repositories/auth_repository.dart';
 
 class Login extends StatefulWidget {
@@ -38,12 +35,6 @@ class _LoginState extends State<Login> {
     });
 
     try {
-      final request = LoginRequestDto(
-        email: _emailController.text,
-        senha: _senhaController.text,
-      );
-
-      final LoginResponseDto response = await AuthService.login(request);
       if (mounted) {
         final authRepo = context.read<AuthRepository>();
         authRepo.loginSuccess();

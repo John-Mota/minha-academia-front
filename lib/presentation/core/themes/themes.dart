@@ -33,7 +33,7 @@ final ThemeData darkTheme = ThemeData(
     filled: true,
     fillColor: darkBackgroundColor,
     labelStyle: TextStyle(color: darkForegroundColor),
-    hintStyle: TextStyle(color: darkForegroundColor.withOpacity(0.6)),
+    hintStyle: TextStyle(color: darkForegroundColor.withValues(alpha: 56)),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(4.0),
       borderSide: BorderSide(color: primaryColor, width: 0.8),
@@ -81,7 +81,7 @@ final ThemeData lightTheme = ThemeData(
     filled: true,
     fillColor: lightBackgroundColor,
     labelStyle: TextStyle(color: lightForegroundColor),
-    hintStyle: TextStyle(color: lightForegroundColor.withOpacity(0.6)),
+    hintStyle: TextStyle(color: lightForegroundColor.withValues(alpha: 153)),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(4.0),
       borderSide: BorderSide(color: primaryColor, width: 0.8),

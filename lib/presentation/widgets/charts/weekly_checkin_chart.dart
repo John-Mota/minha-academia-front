@@ -46,7 +46,6 @@ class WeeklyCheckinChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const targetLineY = 110.0;
     final lineColor = primaryColor;
 
     final List<FlSpot> checkinData = [

@@ -67,7 +67,7 @@ class _MapaScreenState extends State<MapaScreen> {
             width: 24,
             height: 24,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.7),
+              color: color.withValues(alpha: 179),
               border: Border.all(color: Colors.white24, width: 1),
               borderRadius: BorderRadius.circular(4),
             ),
@@ -111,7 +111,7 @@ class _MapaScreenState extends State<MapaScreen> {
                   color: const Color(0xFF252d3d),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: Colors.white.withOpacity(0.1),
+                    color: Colors.white.withValues(alpha: 25.5),
                     width: 1,
                   ),
                 ),
@@ -163,7 +163,7 @@ class _MapaScreenState extends State<MapaScreen> {
                             mini: true,
                             backgroundColor: const Color(
                               0xFFff6b6b,
-                            ).withOpacity(0.9),
+                            ).withValues(alpha: 229.5),
                             onPressed: () {
                               _mapController.fitCamera(
                                 CameraFit.bounds(
@@ -183,10 +183,12 @@ class _MapaScreenState extends State<MapaScreen> {
                           right: 20,
                           child: Container(
                             decoration: BoxDecoration(
-                              color: const Color(0xFF1a1f2e).withOpacity(0.95),
+                              color: const Color(
+                                0xFF1a1f2e,
+                              ).withValues(alpha: 242.25),
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(
-                                color: Colors.white.withOpacity(0.1),
+                                color: Colors.white.withValues(alpha: 25.5),
                                 width: 1,
                               ),
                             ),

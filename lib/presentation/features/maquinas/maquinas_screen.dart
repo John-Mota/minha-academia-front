@@ -89,7 +89,7 @@ class MachineCard extends StatelessWidget {
           Text(
             '$label: ',
             style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurface.withOpacity(0.6),
+              color: theme.colorScheme.onSurface.withValues(alpha: 153),
             ),
           ),
           Flexible(
@@ -165,7 +165,7 @@ class MachineCard extends StatelessWidget {
                 _buildStatusChip(data.status, data.statusColor),
                 Icon(
                   Icons.settings,
-                  color: theme.colorScheme.onSurface.withOpacity(0.5),
+                  color: theme.colorScheme.onSurface.withValues(alpha: 127.5),
                   size: 18,
                 ),
               ],

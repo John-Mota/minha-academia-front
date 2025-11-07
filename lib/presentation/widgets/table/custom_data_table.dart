@@ -49,7 +49,7 @@ class CustomDataTable extends StatelessWidget {
         children: [
           IconButton(
             icon: const Icon(Icons.edit, size: 20),
-            color: Colors.white.withOpacity(0.8),
+            color: Colors.white.withValues(alpha: 204),
             onPressed: onEdit != null ? () => onEdit!(item) : null,
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints.tightFor(width: 30, height: 32),
@@ -101,7 +101,7 @@ class CustomDataTable extends StatelessWidget {
             column.title,
             style: theme.textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.bold,
-              color: theme.colorScheme.onSurface.withOpacity(0.8),
+              color: theme.colorScheme.onSurface.withValues(alpha: 204),
             ),
             overflow: TextOverflow.ellipsis,
           );
@@ -239,7 +239,7 @@ class CustomDataTable extends StatelessWidget {
             color: _cardBackgroundColor,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: Colors.white.withOpacity(0.3),
+              color: Colors.white.withValues(alpha: 75.5),
               width: 2.0,
             ),
           ),

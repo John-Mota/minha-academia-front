@@ -20,8 +20,6 @@ class ProfessorService {
       final List<dynamic> professorsJsonList =
           data[_professorsKey] as List<dynamic>? ?? [];
 
-      print('Carregando cache de professores...');
-
       _professorsCache = professorsJsonList
           .map((json) => ProfessorResponseDto.fromJson(json))
           .toList();

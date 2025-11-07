@@ -46,7 +46,7 @@ class ExerciseItem extends StatelessWidget {
                 children: [
                   IconButton(
                     icon: const Icon(Icons.edit, size: 20),
-                    color: Colors.white.withOpacity(0.7),
+                    color: Colors.white.withValues(alpha: 178.5),
                     onPressed: () {},
                   ),
                   IconButton(
@@ -81,7 +81,7 @@ class ExerciseItem extends StatelessWidget {
         Text(
           title,
           style: theme.textTheme.bodySmall?.copyWith(
-            color: Colors.white.withOpacity(0.5),
+            color: Colors.white.withValues(alpha: 127.5),
           ),
         ),
         const SizedBox(height: 4),

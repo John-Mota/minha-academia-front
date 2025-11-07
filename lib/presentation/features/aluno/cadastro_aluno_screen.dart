@@ -155,7 +155,7 @@ class _CadastroAlunoScreenState extends State<CadastroAlunoScreen> {
                       Text('Plano', style: theme.textTheme.titleMedium),
                       const SizedBox(height: 8.0),
                       DropdownButtonFormField<String>(
-                        value: _planoSelecionado,
+                        initialValue: _planoSelecionado,
                         hint: const Text('Selecione um plano'),
                         dropdownColor: _fieldFillColor,
                         decoration: _inputDecoration(
@@ -239,9 +239,6 @@ class _CadastroAlunoScreenState extends State<CadastroAlunoScreen> {
                                   'Deseja salvar as alterações feitas no cadastro de ${widget.aluno!['nome']}?',
                               confirmText: 'Salvar',
                               onConfirm: () {
-                                print(
-                                  'Salvando alterações para o aluno ID: ${widget.aluno!['id']}',
-                                );
                                 if (widget.onSave != null) widget.onSave!();
                                 Navigator.of(mainDialogContext).pop();
                               },
@@ -255,9 +252,6 @@ class _CadastroAlunoScreenState extends State<CadastroAlunoScreen> {
                               content: 'Deseja cadastrar o novo aluno?',
                               confirmText: 'Cadastrar',
                               onConfirm: () {
-                                print(
-                                  'Cadastrando e enviando ativação para o novo aluno.',
-                                );
                                 if (widget.onSave != null) widget.onSave!();
                                 Navigator.of(mainDialogContext).pop();
                               },
@@ -285,7 +279,7 @@ class _CadastroAlunoScreenState extends State<CadastroAlunoScreen> {
                 'Ao cadastrar, um link seguro para criação de senha será enviado ao e-mail informado. O usuário terá o status PENDENTE até a ativação.',
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                  color: theme.colorScheme.onSurface.withValues(alpha: 153),
                 ),
               ),
             ],

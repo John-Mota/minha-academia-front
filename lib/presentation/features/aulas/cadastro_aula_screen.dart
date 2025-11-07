@@ -32,10 +32,6 @@ class _CadastroAulaScreenState extends State<CadastroAulaScreen> {
     super.initState();
     _isEditing = widget.aula != null;
     _loadProfessores();
-
-    if (_isEditing) {
-      // TODO: Preencher campos com dados da aula
-    }
   }
 
   Future<void> _loadProfessores() async {
@@ -117,7 +113,6 @@ class _CadastroAulaScreenState extends State<CadastroAulaScreen> {
                 ],
               ),
               const SizedBox(height: 20.0),
-              // TODO: Adicionar seletor de dias da semana (ex: checkboxes)
               const SizedBox(height: 40.0),
               Row(
                 children: [
@@ -132,9 +127,7 @@ class _CadastroAulaScreenState extends State<CadastroAulaScreen> {
                   ],
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {
-                        // TODO: Implementar lógica de salvar
-                      },
+                      onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         backgroundColor: _primaryHighlightColor,
                       ),
@@ -178,7 +171,7 @@ class _CadastroAulaScreenState extends State<CadastroAulaScreen> {
 
   Widget _buildProfessorDropdown() {
     return DropdownButtonFormField<ProfessorResponseDto>(
-      value: _selectedProfessor,
+      initialValue: _selectedProfessor,
       items: _professores.map((ProfessorResponseDto professor) {
         return DropdownMenuItem<ProfessorResponseDto>(
           value: professor,

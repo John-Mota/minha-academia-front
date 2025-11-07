@@ -91,7 +91,6 @@ class _MapaWidgetState extends State<MapaWidget> {
             color: fillColor,
             borderColor: Colors.black,
             borderStrokeWidth: 0.5,
-            isFilled: true,
           ),
         );
       } else if (geometryType == 'MultiPolygon') {
@@ -115,7 +114,6 @@ class _MapaWidgetState extends State<MapaWidget> {
               color: fillColor,
               borderColor: Colors.black,
               borderStrokeWidth: 0.5,
-              isFilled: true,
             ),
           );
         }
@@ -198,15 +196,15 @@ class _MapaWidgetState extends State<MapaWidget> {
     final count = alunoCount[bairro] ?? 0;
     switch (count) {
       case 0:
-        return const Color(0xFF3a4050).withOpacity(0.8);
+        return const Color(0xFF3a4050).withValues(alpha: 56);
       case 1:
-        return Colors.green[200]!.withOpacity(0.7);
+        return Colors.green[200]!.withValues(alpha: 56);
       case 2:
-        return Colors.yellow[400]!.withOpacity(0.8);
+        return Colors.yellow[400]!.withValues(alpha: 56);
       case 3:
-        return Colors.orange[600]!.withOpacity(0.8);
+        return Colors.orange[600]!.withValues(alpha: 56);
       default:
-        return Colors.red[700]!.withOpacity(0.8);
+        return Colors.red[700]!.withValues(alpha: 56);
     }
   }
 

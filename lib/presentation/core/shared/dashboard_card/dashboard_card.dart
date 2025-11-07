@@ -4,7 +4,7 @@ import 'package:minha_academia_front/presentation/core/shared/dashboard_card/das
 class DashboardCard extends StatelessWidget {
   final DashboardCardData data;
 
-  const DashboardCard({Key? key, required this.data}) : super(key: key);
+  const DashboardCard({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {

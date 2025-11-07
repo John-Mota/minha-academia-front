@@ -77,7 +77,7 @@ class _MetricItem extends StatelessWidget {
         Text(
           label,
           style: Theme.of(set).textTheme.titleSmall?.copyWith(
-            color: Theme.of(set).colorScheme.onSurface.withOpacity(0.7),
+            color: Theme.of(set).colorScheme.onSurface.withValues(alpha: 178.5),
           ),
         ),
       ],

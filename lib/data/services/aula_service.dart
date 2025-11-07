@@ -29,8 +29,6 @@ class AulaService {
         for (var p in professores) p.id: p,
       };
 
-      aulasJsonList.forEach((aula) => print(aula));
-
       _aulasCache = aulasJsonList.map((json) {
         ProfessorResponseDto? professor = professorMap[json['professorId']];
         if (professor == null) {
@@ -40,8 +38,6 @@ class AulaService {
         }
         return AulaResponseDto.fromJson(json, professor);
       }).toList();
-
-      _aulasCache!.forEach((aula) => print(aula.toJson()));
     } catch (e, st) {
       debugPrint('❌ Erro ao carregar o cache de aulas: $e\n$st');
       _aulasCache = [];

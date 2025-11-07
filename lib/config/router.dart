@@ -1,8 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
-import 'package:minha_academia_front/presentation/features/maquinas/MaquinasScreen.dart';
-import 'package:minha_academia_front/presentation/features/treinos/TreinoFormScreen.dart';
-import 'package:minha_academia_front/presentation/features/treinos/TreinosScreen.dart';
+import 'package:minha_academia_front/presentation/features/maquinas/maquinas_screen.dart';
+import 'package:minha_academia_front/presentation/features/treinos/treino_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'package:minha_academia_front/data/repositories/auth_repository.dart';

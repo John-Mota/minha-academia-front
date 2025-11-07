@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:minha_academia_front/domain/model/response/professor_response_dto.dart';
-import 'package:minha_academia_front/domain/model/request/professor_request_dto.dart';
 import 'package:minha_academia_front/data/services/professor_service.dart';
 import 'package:minha_academia_front/presentation/widgets/table/custom_data_table.dart';
 import 'package:minha_academia_front/presentation/widgets/dialog/confirmation_dialog.dart';
@@ -44,9 +43,10 @@ class _ProfessoresScreenState extends State<ProfessoresScreen> {
         content:
             'Tem certeza de que deseja inativar o professor ${professor['nome']}?',
         onConfirm: () async {
+          final navigator = Navigator.of(context); // capture Navigator now
           await ProfessorService.deleteProfessor(professor['id']);
           await _loadProfessores();
-          Navigator.of(context).pop();
+          navigator.pop();
         },
       ),
     );
@@ -138,12 +138,10 @@ class _ProfessoresScreenState extends State<ProfessoresScreen> {
                   decoration: InputDecoration(
                     hintText: 'Buscar professor...',
                     hintStyle: TextStyle(
-                      color: theme.colorScheme.onSurface.withOpacity(0.5),
+                      color: theme.colorScheme.onSurface.withAlpha(127),
                     ),
                     prefixIcon: const Icon(Icons.search),
-                    prefixIconColor: theme.colorScheme.onSurface.withOpacity(
-                      0.8,
-                    ),
+                    prefixIconColor: theme.colorScheme.onSurface.withAlpha(204),
                     contentPadding: const EdgeInsets.symmetric(
                       vertical: 18.0,
                       horizontal: 16.0,

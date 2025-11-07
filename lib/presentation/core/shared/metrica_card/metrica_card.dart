@@ -9,14 +9,14 @@ class MetricCard extends StatelessWidget {
   final String? footer;
 
   const MetricCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.value,
     required this.icon,
     this.valueColor = Colors.white,
     this.iconColor = Colors.blue,
     this.footer,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
