@@ -2,13 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class Home extends StatelessWidget {
-  // CRÍTICO: O ShellRoute injeta a tela atual da rota aninhada aqui.
   final Widget child;
 
-  // O construtor deve aceitar o child.
   const Home({super.key, required this.child});
-
-  // Mapeamento das rotas para navegação. Os paths DEVEM bater com os GoRoutes em router.dart
   static const List<Map<String, dynamic>> menuItems = [
     {'label': 'Início', 'icon': Icons.dashboard, 'path': '/home'},
     {'label': 'Alunos', 'icon': Icons.person, 'path': '/alunos'},
@@ -24,14 +20,11 @@ class Home extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     const double desktopBreakpoint = 900.0;
     final isDesktop = screenWidth >= desktopBreakpoint;
-
-    // Captura o path atual para saber qual item do menu deve estar ativo
     final currentPath = GoRouter.of(
       context,
     ).routeInformationProvider.value.uri.toString();
 
     if (!isDesktop) {
-      // Configuração para Mobile (Drawer)
       return Scaffold(
         appBar: AppBar(
           title: const Text('FitPalette Admin'),
@@ -41,12 +34,10 @@ class Home extends StatelessWidget {
         drawer: Drawer(
           child: _buildSidebar(context, true, currentPath, isCollapsed: false),
         ),
-        // A tela de conteúdo atual fornecida pelo GoRouter
         body: child,
       );
     }
 
-    // Configuração para Desktop (Sidebar Fixo)
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Row(
@@ -61,10 +52,8 @@ class Home extends StatelessWidget {
               ),
             ),
             margin: const EdgeInsets.all(16.0),
-            // Chamada sem 'const' para evitar erro.
             child: SizedBox(
               width: 250.0,
-              // Chamamos o sidebar com o path atual para o destaque
               child: _buildSidebar(
                 context,
                 false,
@@ -73,14 +62,12 @@ class Home extends StatelessWidget {
               ),
             ),
           ),
-          // A tela de conteúdo atual fornecida pelo GoRouter
           Expanded(child: child),
         ],
       ),
     );
   }
 
-  // Método helper que constrói a estrutura do menu
   Widget _buildSidebar(
     BuildContext context,
     bool isMobile,
@@ -115,9 +102,7 @@ class Home extends StatelessWidget {
           ),
         ),
 
-        // Loop que constrói os itens do menu
         ...menuItems.map((item) {
-          // A lógica de destaque usa startsWith, funcionando para rotas aninhadas.
           final isSelected = currentPath.startsWith(item['path'] as String);
           return _buildMenuItem(
             context: context,
@@ -133,7 +118,6 @@ class Home extends StatelessWidget {
     );
   }
 
-  // Método helper que constrói um item de menu individual
   Widget _buildMenuItem({
     required BuildContext context,
     required String label,
@@ -152,13 +136,11 @@ class Home extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.0),
         child: InkWell(
           onTap: () {
-            // DEBUG PRINT para verificar se o path correto está sendo chamado
             debugPrint('Menu Clicado: $label -> Caminho de navegação: $path');
 
-            // Navega para a rota usando o GoRouter
             context.go(path);
             if (isMobile) {
-              Navigator.of(context).pop(); // Fecha o Drawer no mobile
+              Navigator.of(context).pop();
             }
           },
           child: SizedBox(

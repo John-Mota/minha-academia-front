@@ -1,5 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
+import 'package:minha_academia_front/presentation/features/maquinas/MaquinasScreen.dart';
+import 'package:minha_academia_front/presentation/features/treinos/TreinoFormScreen.dart';
+import 'package:minha_academia_front/presentation/features/treinos/TreinosScreen.dart';
 import 'package:provider/provider.dart';
 
 import 'package:minha_academia_front/data/repositories/auth_repository.dart';
@@ -10,10 +13,6 @@ import 'package:minha_academia_front/presentation/features/aluno/alunos_screen.d
 import 'package:minha_academia_front/presentation/features/aluno/cadastro_aluno_screen.dart';
 import 'package:minha_academia_front/presentation/features/professor/professores_screen.dart';
 import 'package:minha_academia_front/presentation/features/professor/cadastro_professor_screen.dart';
-import 'package:minha_academia_front/presentation/features/maquina/maquinas_screen.dart';
-import 'package:minha_academia_front/presentation/features/maquina/cadastro_maquina_screen.dart';
-import 'package:minha_academia_front/presentation/features/treino/treinos_screen.dart';
-import 'package:minha_academia_front/presentation/features/treino/cadastro_treino_screen.dart';
 import 'package:minha_academia_front/presentation/features/aulas/aulas_screen.dart';
 import 'package:minha_academia_front/presentation/features/aulas/cadastro_aula_screen.dart';
 import 'package:minha_academia_front/presentation/features/mapa/mapa_screen.dart';
@@ -63,15 +62,12 @@ GoRouter buildAppRouter(AuthRepository authRepository) {
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
         builder: (ctx, state, child) {
-          // Ajuste Crítico: Passa o widget 'child' (a tela da rota) para o Home.
-          // O Home agora é o Layout que contém o menu e renderiza o 'child'.
           return Home(child: child);
         },
         routes: [
           GoRoute(
             path: '/home',
             parentNavigatorKey: _shellNavigatorKey,
-            // O DashboardContent é a tela inicial dentro do layout Home.
             pageBuilder: (ctx, state) =>
                 const NoTransitionPage(child: DashboardContent()),
           ),
@@ -83,8 +79,6 @@ GoRouter buildAppRouter(AuthRepository authRepository) {
             routes: [
               GoRoute(
                 path: 'cadastro',
-                // Rotas de cadastro não precisam de NoTransitionPage se quiserem animação de slide,
-                // mas mantive a consistência com o que você enviou.
                 parentNavigatorKey: _shellNavigatorKey,
                 pageBuilder: (ctx, state) =>
                     const NoTransitionPage(child: CadastroAlunoScreen()),
@@ -111,12 +105,12 @@ GoRouter buildAppRouter(AuthRepository authRepository) {
             pageBuilder: (ctx, state) =>
                 const NoTransitionPage(child: MaquinasScreen()),
             routes: [
-              GoRoute(
-                path: 'cadastro',
-                parentNavigatorKey: _shellNavigatorKey,
-                pageBuilder: (ctx, state) =>
-                    const NoTransitionPage(child: CadastroMaquinaScreen()),
-              ),
+              // GoRoute(
+              //   path: 'cadastro',
+              //   parentNavigatorKey: _shellNavigatorKey,
+              //   pageBuilder: (ctx, state) =>
+              //       const NoTransitionPage(child: CadastroMaquinaScreen()),
+              // ),
             ],
           ),
           GoRoute(
@@ -125,12 +119,12 @@ GoRouter buildAppRouter(AuthRepository authRepository) {
             pageBuilder: (ctx, state) =>
                 const NoTransitionPage(child: TreinosScreen()),
             routes: [
-              GoRoute(
-                path: 'cadastro',
-                parentNavigatorKey: _shellNavigatorKey,
-                pageBuilder: (ctx, state) =>
-                    const NoTransitionPage(child: CadastroTreinoScreen()),
-              ),
+              // GoRoute(
+              //   path: 'cadastro',
+              //   parentNavigatorKey: _shellNavigatorKey,
+              //   pageBuilder: (ctx, state) =>
+              //       const NoTransitionPage(child: TreinoFormCard()),
+              // ),
             ],
           ),
           GoRoute(
