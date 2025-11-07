@@ -1,147 +1,52 @@
 import 'package:flutter/material.dart';
-import 'package:minha_academia_front/presentation/features/aluno/alunos_screen.dart';
-import 'package:minha_academia_front/presentation/features/aulas/aulas_screen.dart';
-import 'package:minha_academia_front/presentation/features/dashboard/dashboard_content.dart';
-import 'package:minha_academia_front/presentation/features/mapa/mapa_screen.dart';
-import 'package:minha_academia_front/presentation/features/maquinas/MaquinasScreen.dart';
-import 'package:minha_academia_front/presentation/features/professor/professores_screen.dart';
-import 'package:minha_academia_front/presentation/features/treinos/TreinosScreen.dart';
+import 'package:go_router/go_router.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class Home extends StatelessWidget {
+  // CRÍTICO: O ShellRoute injeta a tela atual da rota aninhada aqui.
+  final Widget child;
 
-  @override
-  State<Home> createState() => _HomeState();
-}
+  // O construtor deve aceitar o child.
+  const Home({super.key, required this.child});
 
-class _HomeState extends State<Home> {
-  int _selectedIndex = 0;
-  bool _isCollapsed = false;
-
-  final List<Widget> _pages = [
-    const DashboardContent(),
-    const AlunosScreen(),
-    const ProfessoresScreen(),
-    const MaquinasScreen(),
-    const TreinosScreen(),
-    const AulasScreen(),
-    const MapaScreen(),
+  // Mapeamento das rotas para navegação. Os paths DEVEM bater com os GoRoutes em router.dart
+  static const List<Map<String, dynamic>> menuItems = [
+    {'label': 'Início', 'icon': Icons.dashboard, 'path': '/home'},
+    {'label': 'Alunos', 'icon': Icons.person, 'path': '/alunos'},
+    {'label': 'Professores', 'icon': Icons.school, 'path': '/professor'},
+    {'label': 'Máquinas', 'icon': Icons.fitness_center, 'path': '/maquina'},
+    {'label': 'Treinos', 'icon': Icons.run_circle, 'path': '/treino'},
+    {'label': 'Aulas', 'icon': Icons.sports_gymnastics, 'path': '/aulas'},
+    {'label': 'Mapa', 'icon': Icons.assessment, 'path': '/mapa'},
   ];
-
-  void _onMenuItemSelected(int index, {bool closeDrawer = false}) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    if (closeDrawer && Navigator.of(context).canPop()) {
-      Navigator.of(context).pop();
-    }
-  }
-
-  Widget _buildSidebar(bool isMobile) {
-    return ListView(
-      padding: EdgeInsets.zero,
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: 24.0,
-            horizontal: isMobile || _isCollapsed ? 4.0 : 16.0,
-          ),
-          child: Row(
-            mainAxisAlignment: isMobile
-                ? MainAxisAlignment.start
-                : MainAxisAlignment.end,
-            children: [
-              if (!isMobile && !_isCollapsed)
-                Expanded(
-                  child: Text(
-                    'FitPalette Admin',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              if (!isMobile)
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _isCollapsed = !_isCollapsed;
-                    });
-                  },
-                  icon: Icon(
-                    _isCollapsed ? Icons.menu : Icons.arrow_back_ios,
-                    color: Theme.of(context).colorScheme.onSurface,
-                    size: 20.0,
-                  ),
-                ),
-            ],
-          ),
-        ),
-        _buildMenuItem(
-          label: 'Início',
-          icon: Icons.dashboard,
-          index: 0,
-          isMobile: isMobile,
-        ),
-        _buildMenuItem(
-          label: 'Alunos',
-          icon: Icons.person,
-          index: 1,
-          isMobile: isMobile,
-        ),
-        _buildMenuItem(
-          label: 'Professores',
-          icon: Icons.school,
-          index: 2,
-          isMobile: isMobile,
-        ),
-        _buildMenuItem(
-          label: 'Máquinas',
-          icon: Icons.fitness_center,
-          index: 3,
-          isMobile: isMobile,
-        ),
-        _buildMenuItem(
-          label: 'Treinos',
-          icon: Icons.run_circle,
-          index: 4,
-          isMobile: isMobile,
-        ),
-        _buildMenuItem(
-          label: 'Aulas',
-          icon: Icons.sports_gymnastics,
-          index: 5,
-          isMobile: isMobile,
-        ),
-        _buildMenuItem(
-          label: 'Mapa',
-          icon: Icons.assessment,
-          index: 6,
-          isMobile: isMobile,
-        ),
-      ],
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     const double desktopBreakpoint = 900.0;
     final isDesktop = screenWidth >= desktopBreakpoint;
+
+    // Captura o path atual para saber qual item do menu deve estar ativo
+    final currentPath = GoRouter.of(
+      context,
+    ).routeInformationProvider.value.uri.toString();
+
     if (!isDesktop) {
+      // Configuração para Mobile (Drawer)
       return Scaffold(
         appBar: AppBar(
           title: const Text('FitPalette Admin'),
           backgroundColor: Theme.of(context).colorScheme.surface,
           elevation: 0,
         ),
-        drawer: Drawer(child: _buildSidebar(true)),
-
-        body: _pages[_selectedIndex],
+        drawer: Drawer(
+          child: _buildSidebar(context, true, currentPath, isCollapsed: false),
+        ),
+        // A tela de conteúdo atual fornecida pelo GoRouter
+        body: child,
       );
     }
 
+    // Configuração para Desktop (Sidebar Fixo)
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Row(
@@ -156,27 +61,88 @@ class _HomeState extends State<Home> {
               ),
             ),
             margin: const EdgeInsets.all(16.0),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              width: _isCollapsed ? 50.0 : 250.0,
-              child: _buildSidebar(false),
+            // Chamada sem 'const' para evitar erro.
+            child: SizedBox(
+              width: 250.0,
+              // Chamamos o sidebar com o path atual para o destaque
+              child: _buildSidebar(
+                context,
+                false,
+                currentPath,
+                isCollapsed: false,
+              ),
             ),
           ),
-
-          Expanded(child: _pages[_selectedIndex]),
+          // A tela de conteúdo atual fornecida pelo GoRouter
+          Expanded(child: child),
         ],
       ),
     );
   }
 
+  // Método helper que constrói a estrutura do menu
+  Widget _buildSidebar(
+    BuildContext context,
+    bool isMobile,
+    String currentPath, {
+    required bool isCollapsed,
+  }) {
+    return ListView(
+      padding: EdgeInsets.zero,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: 24.0,
+            horizontal: isMobile || isCollapsed ? 4.0 : 16.0,
+          ),
+          child: Row(
+            mainAxisAlignment: isMobile
+                ? MainAxisAlignment.start
+                : MainAxisAlignment.end,
+            children: [
+              if (!isMobile)
+                Expanded(
+                  child: Text(
+                    'FitPalette Admin',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+            ],
+          ),
+        ),
+
+        // Loop que constrói os itens do menu
+        ...menuItems.map((item) {
+          // A lógica de destaque usa startsWith, funcionando para rotas aninhadas.
+          final isSelected = currentPath.startsWith(item['path'] as String);
+          return _buildMenuItem(
+            context: context,
+            label: item['label'] as String,
+            icon: item['icon'] as IconData,
+            path: item['path'] as String,
+            isSelected: isSelected,
+            isMobile: isMobile,
+            isCollapsed: isCollapsed,
+          );
+        }).toList(),
+      ],
+    );
+  }
+
+  // Método helper que constrói um item de menu individual
   Widget _buildMenuItem({
+    required BuildContext context,
     required String label,
     required IconData icon,
-    required int index,
+    required String path,
+    required bool isSelected,
     required bool isMobile,
+    required bool isCollapsed,
   }) {
-    final isSelected = _selectedIndex == index;
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Material(
@@ -185,10 +151,19 @@ class _HomeState extends State<Home> {
             : Colors.transparent,
         borderRadius: BorderRadius.circular(8.0),
         child: InkWell(
-          onTap: () => _onMenuItemSelected(index, closeDrawer: isMobile),
+          onTap: () {
+            // DEBUG PRINT para verificar se o path correto está sendo chamado
+            debugPrint('Menu Clicado: $label -> Caminho de navegação: $path');
+
+            // Navega para a rota usando o GoRouter
+            context.go(path);
+            if (isMobile) {
+              Navigator.of(context).pop(); // Fecha o Drawer no mobile
+            }
+          },
           child: SizedBox(
             height: 48.0,
-            child: _isCollapsed && !isMobile
+            child: isCollapsed && !isMobile
                 ? Tooltip(
                     message: label,
                     child: Center(
