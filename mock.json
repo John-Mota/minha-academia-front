@@ -359,5 +359,56 @@
       "nome": "Operador do Sistema"
     }
   ],
+
+  "maquinas": [
+    {
+      "title": "Esteira Profissional",
+      "id": "EQ001",
+      "lastMaintenance": "15/09/2025",
+      "status": "Operacional"
+    },
+    {
+      "title": "Supino Reto",
+      "id": "EQ002",
+      "lastMaintenance": "10/09/2025",
+      "status": "Operacional"
+    },
+    {
+      "title": "Leg Press 45°",
+      "id": "EQ003",
+      "lastMaintenance": "05/10/2025",
+      "status": "Em Manutenção"
+    },
+    {
+      "title": "Bicicleta Ergométrica",
+      "id": "EQ004",
+      "lastMaintenance": "20/09/2025",
+      "status": "Operacional"
+    },
+    {
+      "title": "Cross Trainer",
+      "id": "EQ005",
+      "lastMaintenance": "01/09/2025",
+      "status": "Quebrado"
+    },
+    {
+      "title": "Puxador Alto",
+      "id": "EQ006",
+      "lastMaintenance": "25/09/2025",
+      "status": "Operacional"
+    },
+    {
+      "title": "Hack Squat",
+      "id": "EQ007",
+      "lastMaintenance": "03/10/2025",
+      "status": "Em Manutenção"
+    },
+    {
+      "title": "Remada Sentada",
+      "id": "EQ008",
+      "lastMaintenance": "18/09/2025",
+      "status": "Operacional"
+    }
+  ],
   "dashboard_data": {}
 }

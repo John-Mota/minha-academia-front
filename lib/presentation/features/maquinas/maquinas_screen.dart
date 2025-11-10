@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:minha_academia_front/data/services/maquina_service.dart';
+import 'package:minha_academia_front/presentation/features/maquinas/cadastro_maquina_screen.dart';
 
 class InventorySummary extends StatelessWidget {
   const InventorySummary({super.key});
@@ -75,11 +77,49 @@ class MachineCardData {
     required this.statusColor,
     required this.icon,
   });
+  factory MachineCardData.fromJson(Map<String, dynamic> json) {
+    final String status = json['status'] ?? 'Desconhecido';
+    final Color color;
+    final IconData icon;
+
+    switch (status) {
+      case 'Operacional':
+        color = Colors.greenAccent;
+        icon = Icons.check_circle;
+        break;
+      case 'Em Manutenção':
+        color = Colors.amberAccent;
+        icon = Icons.build;
+        break;
+      case 'Quebrado':
+        color = Colors.redAccent;
+        icon = Icons.warning;
+        break;
+      default:
+        color = Colors.grey;
+        icon = Icons.help_outline;
+    }
+
+    return MachineCardData(
+      title: json['title'] ?? 'Sem Título',
+      id: json['id'] ?? 'Sem ID',
+      lastMaintenance: json['lastMaintenance'] ?? 'N/A',
+      status: status,
+      statusColor: color,
+      icon: icon,
+    );
+  }
 }
 
 class MachineCard extends StatelessWidget {
   final MachineCardData data;
-  const MachineCard({super.key, required this.data});
+  final VoidCallback onEditPressed;
+
+  const MachineCard({
+    super.key,
+    required this.data,
+    required this.onEditPressed,
+  });
 
   Widget _buildDetailRow(ThemeData theme, String label, String value) {
     return Padding(
@@ -153,20 +193,21 @@ class MachineCard extends StatelessWidget {
                 Icon(data.icon, color: data.statusColor, size: 20),
               ],
             ),
-
             const SizedBox(height: 12),
             _buildDetailRow(theme, 'ID do Ativo', data.id),
             _buildDetailRow(theme, 'Última Manutenção', data.lastMaintenance),
-
             const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildStatusChip(data.status, data.statusColor),
-                Icon(
-                  Icons.settings,
-                  color: theme.colorScheme.onSurface.withValues(alpha: 127.5),
-                  size: 18,
+                IconButton(
+                  icon: Icon(
+                    Icons.settings,
+                    color: theme.colorScheme.onSurface.withValues(alpha: 127.5),
+                    size: 18,
+                  ),
+                  onPressed: onEditPressed,
                 ),
               ],
             ),
@@ -177,78 +218,38 @@ class MachineCard extends StatelessWidget {
   }
 }
 
-class MaquinasScreen extends StatelessWidget {
+class MaquinasScreen extends StatefulWidget {
   const MaquinasScreen({super.key});
 
-  final List<MachineCardData> _machineData = const [
-    MachineCardData(
-      title: 'Esteira Profissional',
-      id: 'EQ001',
-      lastMaintenance: '15/09/2025',
-      status: 'Operacional',
-      statusColor: Colors.greenAccent,
-      icon: Icons.check_circle,
-    ),
-    MachineCardData(
-      title: 'Supino Reto',
-      id: 'EQ002',
-      lastMaintenance: '10/09/2025',
-      status: 'Operacional',
-      statusColor: Colors.greenAccent,
-      icon: Icons.check_circle,
-    ),
-    MachineCardData(
-      title: 'Leg Press 45°',
-      id: 'EQ003',
-      lastMaintenance: '05/10/2025',
-      status: 'Em Manutenção',
-      statusColor: Colors.amberAccent,
-      icon: Icons.build,
-    ),
-    MachineCardData(
-      title: 'Bicicleta Ergométrica',
-      id: 'EQ004',
-      lastMaintenance: '20/09/2025',
-      status: 'Operacional',
-      statusColor: Colors.greenAccent,
-      icon: Icons.check_circle,
-    ),
-    MachineCardData(
-      title: 'Cross Trainer',
-      id: 'EQ005',
-      lastMaintenance: '01/09/2025',
-      status: 'Quebrado',
-      statusColor: Colors.redAccent,
-      icon: Icons.warning,
-    ),
-    MachineCardData(
-      title: 'Puxador Alto',
-      id: 'EQ006',
-      lastMaintenance: '25/09/2025',
-      status: 'Operacional',
-      statusColor: Colors.greenAccent,
-      icon: Icons.check_circle,
-    ),
-    MachineCardData(
-      title: 'Hack Squat',
-      id: 'EQ007',
-      lastMaintenance: '03/10/2025',
-      status: 'Em Manutenção',
-      statusColor: Colors.amberAccent,
-      icon: Icons.build,
-    ),
-    MachineCardData(
-      title: 'Remada Sentada',
-      id: 'EQ008',
-      lastMaintenance: '18/09/2025',
-      status: 'Operacional',
-      statusColor: Colors.greenAccent,
-      icon: Icons.check_circle,
-    ),
-  ];
+  @override
+  State<MaquinasScreen> createState() => _MaquinasScreenState();
+}
+
+class _MaquinasScreenState extends State<MaquinasScreen> {
+  late Future<List<MachineCardData>> _maquinasFuture;
+  final MaquinaService _service = MaquinaService();
 
   static const Color _searchFieldFillColor = Color(0xFF1E2638);
   static const Color _primaryHighlightColor = Color(0xFFEA4D3C);
+
+  @override
+  void initState() {
+    super.initState();
+    _maquinasFuture = _service.getMaquinas();
+  }
+
+  void _navigateToForm({MachineCardData? maquina}) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CadastroMaquinasScreen(maquina: maquina),
+      ),
+    ).then((_) {
+      setState(() {
+        _maquinasFuture = _service.getMaquinas();
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -274,7 +275,6 @@ class MaquinasScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 32.0),
-
           Row(
             children: [
               Expanded(
@@ -306,10 +306,9 @@ class MaquinasScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 12.0),
-
               screenWidth < 800
                   ? IconButton(
-                      onPressed: () {},
+                      onPressed: () => _navigateToForm(),
                       icon: const Icon(Icons.add, size: 28),
                       color: _primaryHighlightColor,
                       constraints: const BoxConstraints.tightFor(
@@ -318,7 +317,7 @@ class MaquinasScreen extends StatelessWidget {
                       ),
                     )
                   : ElevatedButton.icon(
-                      onPressed: () {},
+                      onPressed: () => _navigateToForm(),
                       icon: const Icon(
                         Icons.add,
                         size: 20,
@@ -340,34 +339,51 @@ class MaquinasScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 32.0),
-
           const InventorySummary(),
           const SizedBox(height: 32.0),
+          FutureBuilder<List<MachineCardData>>(
+            future: _maquinasFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasError) {
+                return Center(child: Text('Erro: ${snapshot.error}'));
+              }
+              if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Center(child: Text('Nenhuma máquina encontrada.'));
+              }
 
-          LayoutBuilder(
-            builder: (context, constraints) {
-              final availableWidth = constraints.maxWidth;
+              final machineData = snapshot.data!;
 
-              final crossAxisCount = availableWidth < 500
-                  ? 1
-                  : availableWidth < 900
-                  ? 3
-                  : 4;
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  final availableWidth = constraints.maxWidth;
+                  final crossAxisCount = availableWidth < 500
+                      ? 1
+                      : availableWidth < 900
+                      ? 3
+                      : 4;
+                  final aspectRatio = availableWidth < 500 ? 1.8 : 1.5;
 
-              final aspectRatio = availableWidth < 500 ? 1.8 : 1.5;
-
-              return GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: _machineData.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: crossAxisCount,
-                  crossAxisSpacing: 20.0,
-                  mainAxisSpacing: 20.0,
-                  childAspectRatio: aspectRatio,
-                ),
-                itemBuilder: (context, index) {
-                  return MachineCard(data: _machineData[index]);
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: machineData.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      crossAxisSpacing: 20.0,
+                      mainAxisSpacing: 20.0,
+                      childAspectRatio: aspectRatio,
+                    ),
+                    itemBuilder: (context, index) {
+                      final maquina = machineData[index];
+                      return MachineCard(
+                        data: maquina,
+                        onEditPressed: () => _navigateToForm(maquina: maquina),
+                      );
+                    },
+                  );
                 },
               );
             },
