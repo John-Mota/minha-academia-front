@@ -410,5 +410,41 @@
       "status": "Operacional"
     }
   ],
+  "treinos_categorias": [
+    "Peito e Tríceps",
+    "Costas e Bíceps",
+    "Pernas",
+    "Ombros"
+  ],
+  "exerciciosPorCategoria": {
+    "Peito e Tríceps": [
+      "Supino Reto",
+      "Supino Inclinado",
+      "Cross Over",
+      "Tríceps Pulley",
+      "Paralelas"
+    ],
+    "Costas e Bíceps": [
+      "Puxador Alto",
+      "Remada Curvada",
+      "Barra Fixa",
+      "Rosca Direta",
+      "Rosca Martelo"
+    ],
+    "Pernas": [
+      "Agachamento Livre",
+      "Leg Press",
+      "Cadeira Extensora",
+      "Mesa Flexora",
+      "Panturrilha"
+    ],
+    "Ombros": [
+      "Desenvolvimento Militar",
+      "Elevação Lateral",
+      "Elevação Frontal",
+      "Encolhimento"
+    ]
+  },
+  "treinos": [],
   "dashboard_data": {}
 }
